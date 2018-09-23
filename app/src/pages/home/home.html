@@ -1,0 +1,43 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>
+			Ionic Blank
+		</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<ion-list>
+		<ion-item>
+				<ion-icon class="ic" ios="ios-mail" md="md-mail" item-left></ion-icon>
+				<ion-label class="lab" stacked >Email:</ion-label>
+				<ion-input type="email" [(ngModel)]="loginData.email"></ion-input>
+		</ion-item>
+		<ion-item class="la">
+			<ion-icon class="ic" name="key" item-left></ion-icon>
+			<ion-label class="lab" stacked >Password:</ion-label>
+			<ion-input type="password" [(ngModel)]="loginData.password"></ion-input>
+		</ion-item>
+	</ion-list>
+	<div text-center>
+		<button ion-button class="btn" (click)="loginCorreo()" [disabled]="!loginData.email || !loginData.password" block outline>Entrar</button>
+	</div>
+	<ion-grid>
+		<ion-row>
+			<ion-col col-8>
+				<p class="pregunta">¿No tienes una cuenta? -></p> 
+			</ion-col>
+			<ion-col col-4>
+				<a class="reg" (click)="registro()">Registrate</a>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col col-6>
+				<button class="fb" full ion-button (click)="facebookLogin()"><ion-icon name="logo-facebook"></ion-icon>&nbsp;Facebook</button>
+			</ion-col>
+			<ion-col col-6>
+				<button class="goo" full ion-button color="danger" (click)="loginGoogle()"><ion-icon name="logo-google"></ion-icon>&nbsp;Google</button>
+			</ion-col>
+		</ion-row>
+	</ion-grid> 
+</ion-content>
