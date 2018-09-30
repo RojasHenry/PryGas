@@ -3,6 +3,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFirestore } from 'angularfire2/firestore';
 
+import {GooglePlus} from '@ionic-native/google-plus';
+
 import { first } from 'rxjs/operators';
 
 /*
@@ -14,7 +16,9 @@ import { first } from 'rxjs/operators';
 @Injectable()
 export class GasFirebaseProvider {
 
-  constructor(public afAuth : AngularFireAuth,public dbGas: AngularFirestore) {
+  constructor(public afAuth : AngularFireAuth,
+              public dbGas: AngularFirestore,
+              public googleplus: GooglePlus) {
     console.log('Hello GasFirebaseProvider Provider');
   }
 
