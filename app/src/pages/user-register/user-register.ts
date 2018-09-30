@@ -32,7 +32,7 @@ export class UserRegisterPage {
   coordenatesDef:Coordenates = {
     lat:-0.1991789,
     long:-78.4320597,
-    zoom: 12
+    zoom: 15
   }
 
   constructor(public menuCtrl: MenuController, public navCtrl: NavController, public navParams: NavParams,public gasFirebase:GasFirebaseProvider, public geolocation:Geolocation) {

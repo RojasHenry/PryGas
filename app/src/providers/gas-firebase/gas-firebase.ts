@@ -54,4 +54,8 @@ export class GasFirebaseProvider {
       return false
     }
   }
+
+  getDistribuitorByZone(zone:string){
+    return this.dbGas.collection('distributor', ref => ref.where('zone','==', zone)).valueChanges()
+  }
 }

@@ -22,11 +22,78 @@
   
   <ion-grid>
     <ion-row align-items-center>
+        <ion-col col>
+            <ion-item>
+                <ion-card>
+                    <agm-map [latitude]="coordenatesDef.lat" [longitude]="coordenatesDef.long" [zoom]="coordenatesDef.zoom" [zoomControl]="false" [streetViewControl] = "false">
+                      <agm-marker [latitude]="coordenatesDef.lat" [longitude]="coordenatesDef.long"></agm-marker>
+                    </agm-map>
+                    <ion-fab right bottom>
+                        <button ion-fab (click)="getLocation()" >
+                          <ion-icon name="pin"></ion-icon>
+                        </button>
+                      </ion-fab>
+                </ion-card>
+              </ion-item>
+        </ion-col>
+      </ion-row>
+    <ion-row align-items-center>
       <ion-col col>
-        <button ion-button color="secondary" round>Pedir Gas</button>
+          <div padding>
+              <ion-segment [(ngModel)]="zone">
+                <ion-segment-button value="sur" (tap)="getDistribuitors('Sur')">
+                  Sur
+                </ion-segment-button>
+                <ion-segment-button value="centro" (tap)="getDistribuitors('Centro')">
+                  Centro
+                </ion-segment-button>
+                <ion-segment-button value="norte" (tap)="getDistribuitors('Norte')">
+                  Norte
+                </ion-segment-button>
+              </ion-segment>
+            </div>
       </ion-col>
     </ion-row>
-  </ion-grid>
-  
+    <ion-row align-items-center>
+        <ion-col col>
+            <div [ngSwitch]="zone">
+                <ion-list *ngSwitchCase="'sur'">
+                  <ion-item>
+                    <ion-thumbnail item-start>
+                      <img src="img/thumbnail-puppy-1.jpg">
+                    </ion-thumbnail>
+                    <h2>Ruby</h2>
+                  </ion-item>
+                  ...
+                </ion-list>
+              
+                <ion-list *ngSwitchCase="'centro'">
+                  <ion-item>
+                    <ion-thumbnail item-start>
+                      <img src="img/thumbnail-kitten-1.jpg">
+                    </ion-thumbnail>
+                    <h2>Luna</h2>
+                  </ion-item>
+                  ...
+                </ion-list>
 
+                <ion-list *ngSwitchCase="'norte'">
+                    <ion-item>
+                      <ion-thumbnail item-start>
+                        <img src="img/thumbnail-kitten-1.jpg">
+                      </ion-thumbnail>
+                      <h2>Luna</h2>
+                    </ion-item>
+                    ...
+                  </ion-list>
+              </div>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
 </ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <button ion-button full color="secondary" round (tap)="orderGas()">Solicitar Gas</button>
+    </ion-toolbar>
+  </ion-footer>
