@@ -5,7 +5,7 @@ import { NavController, ToastController, MenuController } from 'ionic-angular';
 import {GooglePlus} from '@ionic-native/google-plus';
 import {AngularFireModule} from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
-import firebase from 'firebase';
+import firebase, { auth } from 'firebase';
 
 import { Facebook } from '@ionic-native/facebook';
 import { GasFirebaseProvider } from '../../providers/gas-firebase/gas-firebase';
@@ -36,16 +36,14 @@ export class HomePage {
     this.menuCtrl.enable(false, "menuGas");
   }
 
-  
-  
   loginCorreo(){
     console.log(this.loginData)
     let userType = this.loginVerification(this.loginData)
     switch(userType){
       case "user" : 
       this.gasProvider.loginCorreo(this.loginData)
-      .then(auth => {
-        this.navCtrl.setRoot(UserHomePage,{ uid: auth.user.uid });
+      .then(() => {
+        this.navCtrl.setRoot(UserHomePage);
       })
       .catch(err => {
         let toast = this.toastCtrl.create({
@@ -56,7 +54,18 @@ export class HomePage {
       });
       break;
       case "distribuitor": 
-      this.navCtrl.setRoot(DistribuidorPage);
+      this.loginData.email = this.loginData.email+"@mail.com";
+      this.gasProvider.loginCorreo(this.loginData)
+      .then(() => {
+        this.navCtrl.setRoot(DistribuidorPage);
+      })
+      .catch(err => {
+        let toast = this.toastCtrl.create({
+          message: err.message,
+          duration: 1000
+        });
+        toast.present();
+      })
       break;
       default:
       let toast = this.toastCtrl.create({
