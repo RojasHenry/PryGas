@@ -15,6 +15,7 @@ export class MyApp {
   rootPage:any ;
 
   userLogged:UserModel;
+  distribuitorLogged:DistribuitorModel;
 
    constructor( public app: App,  platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afDb: GasFirebaseProvider,public events: Events) {
     this.afDb.isLogged().then((resp: boolean)=>{
@@ -37,6 +38,10 @@ export class MyApp {
 
     events.subscribe('user:logged', (user:UserModel) => {
       this.userLogged = user;
+    });
+
+    events.subscribe('distribuitor:logged', (distribuitor:DistribuitorModel) => {
+      this.distribuitorLogged = distribuitor;
     });
   }
   

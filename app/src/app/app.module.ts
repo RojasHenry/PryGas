@@ -1,3 +1,4 @@
+import { DistribuidorPageModule } from './../pages/distribuidor/distribuidor.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -60,7 +61,8 @@ firebase.initializeApp(firebaseConfig);
     UserHomePageModule,
     UserRegisterPageModule,
     RegisterPageModule,
-    LoginPageModule
+    LoginPageModule,
+    DistribuidorPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

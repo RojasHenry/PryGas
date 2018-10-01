@@ -1,5 +1,6 @@
+import { GasFirebaseProvider } from './../../providers/gas-firebase/gas-firebase';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, MenuController } from 'ionic-angular';
 
 /**
  * Generated class for the DistribuidorPage page.
@@ -13,9 +14,28 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   selector: 'page-distribuidor',
   templateUrl: 'distribuidor.html',
 })
+
+
 export class DistribuidorPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  distribuitorData:DistribuitorModel;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,public afDb : GasFirebaseProvider,public events: Events, public menuCtrl: MenuController) {
+    this.menuCtrl.enable(true, "menuGas");
+
+    this.afDb.getSessionUser()
+    .then((user)=>{
+      this.afDb.getDistribuitorDataByUid(user.uid)
+      .subscribe((distribuitorData:any)=>{
+        this.distribuitorData = distribuitorData;
+        this.events.publish('distribuitor:logged', distribuitorData);
+        console.log(this.distribuitorData)
+      },(error)=>{
+        console.log(error);
+      })
+    }).catch((error)=>{
+      console.log(error);
+    })
   }
 
   ionViewDidLoad() {

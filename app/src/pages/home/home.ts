@@ -1,3 +1,4 @@
+import { DistribuidorPage } from './../distribuidor/distribuidor';
 import { Component } from '@angular/core';
 import { NavController, ToastController, MenuController } from 'ionic-angular';
 
@@ -39,20 +40,32 @@ export class HomePage {
   
   loginCorreo(){
     console.log(this.loginData)
-    this.gasProvider.loginCorreo(this.loginData)
-    .then(auth => {
-      // Do custom things with auth
-      console.log("User logging");
-      console.log(auth);
-      this.navCtrl.setRoot(UserHomePage,{ uid: auth.user.uid });
-    })
-    .catch(err => {
+    let userType = this.loginVerification(this.loginData)
+    switch(userType){
+      case "user" : 
+      this.gasProvider.loginCorreo(this.loginData)
+      .then(auth => {
+        this.navCtrl.setRoot(UserHomePage,{ uid: auth.user.uid });
+      })
+      .catch(err => {
+        let toast = this.toastCtrl.create({
+          message: err.message,
+          duration: 1000
+        });
+        toast.present();
+      });
+      break;
+      case "distribuitor": 
+      this.navCtrl.setRoot(DistribuidorPage);
+      break;
+      default:
       let toast = this.toastCtrl.create({
-        message: err.message,
-        duration: 1000
+        message: "Error: "+userType,
+        duration: 3000
       });
       toast.present();
-    });
+      break;
+    }  
   }
 
   facebookLogin(){
@@ -86,6 +99,35 @@ export class HomePage {
 
   registro(){
     this.navCtrl.push(RegisterPage);
+  }
+
+  loginVerification(loginData){
+    let emailNumber:string = loginData.email
+    let data:string[] = emailNumber.split("@")
+    if(data.length > 1){
+      console.log("es usuario")
+      return 'user'
+    } else{
+      if(data[0].match(/^-{0,1}\d+$/)){
+        if(data[0].length == 10){
+          console.log("es distribuidor")
+          return 'distribuitor'
+        }else{
+          if(data[0].length < 10){
+            console.log("cedula incorrecta")
+            return 'Cédula incorrecta'
+          }else{
+            if(data[0].length > 10){
+              console.log("cedula incorrecta")
+              return 'Cédula incorrecta'
+            }
+          }
+        }
+      }else{
+        console.log("no es numero")
+        return 'Error en data'
+      }
+    }
   }
 
 

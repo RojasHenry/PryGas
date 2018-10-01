@@ -46,6 +46,10 @@ export class GasFirebaseProvider {
     return this.dbGas.collection('users').doc(`${uid}`).valueChanges()
   }
 
+  getDistribuitorDataByUid(uid:string){
+    return this.dbGas.collection('distributor').doc(`${uid}`).valueChanges()
+  }
+
   isLoggedIn() {
     return this.afAuth.authState.pipe(first()).toPromise();
   }

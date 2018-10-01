@@ -54,8 +54,6 @@ export class UserHomePage {
       this.zone = 'sur'
       this.menuCtrl.enable(true, "menuGas");
 
-      this.login()
-
       this.afDb.getSessionUser()
         .then((user)=>{
           this.afDb.getUserDataByUid(user.uid)
@@ -98,44 +96,5 @@ export class UserHomePage {
       console.log(error)
     })
   }
-
-  loginData = {
-    email : '171046192',
-    password : ''
-  };
-
-  isNumber(data:any): boolean{
-    if(Number.isInteger(data)){
-      return true;
-    }else{
-      return false;
-    }
-  }
-
-  login(){
-    let emailNumber:string = this.loginData.email
-    let data:string[] = emailNumber.split("@")
-    if(data.length > 1){
-      console.log("es usuario")
-    } else{
-      if(data[0].match(/^-{0,1}\d+$/)){
-        if(data[0].length == 10){
-          console.log("es distribuidor")
-        }else{
-          if(data[0].length < 10){
-            console.log("cedula incorrecta")
-          }else{
-            if(data[0].length > 10){
-              console.log("cedula incorrecta")
-            }
-          }
-        }
-      }else{
-        console.log("no es numero")
-      }
-    }
-  }
-
-
-
+  
 }
