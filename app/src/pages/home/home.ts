@@ -82,6 +82,10 @@ export class HomePage {
       const facebookCredential = firebase.auth.FacebookAuthProvider.credential(response.authResponse.accessToken);
       firebase.auth().signInWithCredential(facebookCredential)
       .then( success => { 
+        let email = success['email']
+        let nombre = success['displayName']
+        let uid = success['uid']
+        alert("LOGIN SUC FB" + email+nombre+uid)
        this.navCtrl.setRoot(LoginPage);
       });
     }).catch((error) => { 
