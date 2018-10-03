@@ -85,7 +85,8 @@ export class HomePage {
         let email = success['email']
         let nombre = success['displayName']
         let uid = success['uid']
-        alert("LOGIN SUC FB" + email+nombre+uid)
+        let json = success.toJSON()
+        alert("LOGIN SUC FB" + email+nombre+uid +"json: "+json)
        this.navCtrl.setRoot(LoginPage);
       });
     }).catch((error) => { 
