@@ -85,7 +85,7 @@ export class HomePage {
         let email = success['email']
         let nombre = success['displayName']
         let uid = success['uid']
-        let json = success.toJSON()
+        let json = JSON.stringify(success.toJSON())
         alert("LOGIN SUC FB" + email+nombre+uid +"json: "+json)
        this.navCtrl.setRoot(LoginPage);
       });
@@ -101,7 +101,11 @@ export class HomePage {
     }).then(res=>{
       firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
       .then(suc=>{
-        alert("LOGIN SUC")
+        let email = suc['email']
+        let nombre = suc['displayName']
+        let uid = suc['uid']
+        let json = JSON.stringify(suc.toJSON())
+        alert("LOGIN SUC GG" + email+nombre+uid +"json: "+json)
          this.navCtrl.setRoot(LoginPage);
       }).catch(ns=>{
         alert("NOT SUCC")
