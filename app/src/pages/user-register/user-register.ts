@@ -25,7 +25,8 @@ export class UserRegisterPage {
     lastname:"",
     latitude: 0,
     longitude: 0,
-    phone_cell: null
+    phone_cell: null,
+    photo:""
   };
   newRegister:newRegister;
 
@@ -38,8 +39,13 @@ export class UserRegisterPage {
   constructor(public menuCtrl: MenuController, public navCtrl: NavController, public navParams: NavParams,public gasFirebase:GasFirebaseProvider, public geolocation:Geolocation) {
     this.menuCtrl.enable(false, "menuGas");
     this.newRegister = this.navParams.get('newRegister');
-    this.newUser.email = this.newRegister.email;
-    this.newUser.password = this.newRegister.password;
+    if(this.newRegister){
+      this.newUser.email = this.newRegister.email;
+      this.newUser.password = this.newRegister.password;
+    }else{
+      this.newUser = this.navParams.get('userData')
+    }
+    
     this.getLocation();
   }
 

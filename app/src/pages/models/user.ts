@@ -5,7 +5,8 @@ interface UserModel{
     lastname:string,
     latitude:number,
     longitude:number,
-    phone_cell:number
+    phone_cell:number,
+    photo:string
 }
 
 interface DistribuitorModel{

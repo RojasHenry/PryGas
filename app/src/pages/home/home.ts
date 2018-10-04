@@ -1,9 +1,9 @@
+import { UserRegisterPage } from './../user-register/user-register';
 import { DistribuidorPage } from './../distribuidor/distribuidor';
 import { Component } from '@angular/core';
 import { NavController, ToastController, MenuController } from 'ionic-angular';
 
 import {GooglePlus} from '@ionic-native/google-plus';
-import {AngularFireModule} from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import firebase, { auth } from 'firebase';
 
@@ -24,6 +24,17 @@ export class HomePage {
     email : '',
     password : ''
   };
+
+  userFromSocial:UserModel = {
+    email:"",
+    password:"",
+    name:"",
+    lastname:"",
+    latitude: 0,
+    longitude: 0,
+    phone_cell: null,
+    photo:""
+  }
  
   constructor(
     public menuCtrl: MenuController,
@@ -34,6 +45,7 @@ export class HomePage {
     public toastCtrl: ToastController,
     public afAuth: AngularFireAuth) {
     this.menuCtrl.enable(false, "menuGas");
+    
   }
 
   loginCorreo(){
@@ -81,12 +93,27 @@ export class HomePage {
     this.facebook.login(['email']).then( response => {
       const facebookCredential = firebase.auth.FacebookAuthProvider.credential(response.authResponse.accessToken);
       firebase.auth().signInWithCredential(facebookCredential)
-      .then( success => { 
-        let email = success['email']
-        let nombre = success['displayName']
-        let uid = success['uid']
-        let json = JSON.stringify(success.toJSON())
-        alert("LOGIN SUC FB" + email+nombre+uid +"json: "+json)
+      .then( resp => { 
+        let uid = resp['uid']
+        this.userFromSocial.email = resp['email']
+        this.userFromSocial.name = resp['displayName']
+        this.userFromSocial.photo = resp['photoURL']
+        this.gasProvider.getUserNotExist()
+        .then(resp=>{
+          resp.subscribe((data)=>{
+            console.log(data)
+            data.map(user=>{
+              const uidUserData = user.payload.doc.id
+              if(uidUserData == uid){
+                this.navCtrl.setRoot(UserHomePage)
+              }
+            })
+            this.navCtrl.setRoot(UserRegisterPage,{userData: this.userFromSocial})
+          })
+        })
+        .catch(error=>{
+          console.log(error)
+        })
        this.navCtrl.setRoot(LoginPage);
       });
     }).catch((error) => { 
@@ -100,21 +127,34 @@ export class HomePage {
       'offline': true
     }).then(res=>{
       firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
-      .then(suc=>{
-        let email = suc['email']
-        let nombre = suc['displayName']
-        let uid = suc['uid']
-        let json = JSON.stringify(suc.toJSON())
-        alert("LOGIN SUC GG" + email+nombre+uid +"json: "+json)
-         this.navCtrl.setRoot(LoginPage);
+      .then(resp=>{
+        let uid = resp['uid']
+        this.userFromSocial.email = resp['email']
+        this.userFromSocial.name = resp['displayName']
+        this.userFromSocial.photo = resp['photoURL']
+        this.gasProvider.getUserNotExist()
+        .then(resp=>{
+          resp.subscribe((data)=>{
+            console.log(data)
+            data.map(user=>{
+              const uidUserData = user.payload.doc.id
+              if(uidUserData == uid){
+                this.navCtrl.setRoot(UserHomePage)
+              }
+            })
+            this.navCtrl.setRoot(UserRegisterPage,{userData: this.userFromSocial})
+          })
+        })
+        .catch(error=>{
+          console.log(error)
+        })
       }).catch(ns=>{
         alert("NOT SUCC")
       })
     })
   }
 
-
-
+  
   registro(){
     this.navCtrl.push(RegisterPage);
   }
@@ -147,7 +187,5 @@ export class HomePage {
       }
     }
   }
-
-
 }
 

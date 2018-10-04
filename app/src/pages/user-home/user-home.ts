@@ -96,5 +96,7 @@ export class UserHomePage {
       console.log(error)
     })
   }
+
+ 
   
 }

@@ -66,4 +66,8 @@ export class GasFirebaseProvider {
   getDistribuitorByZone(zone:string){
     return this.dbGas.collection('distributor', ref => ref.where('zone','==', zone)).valueChanges()
   }
+
+  async getUserNotExist(){  
+    return this.dbGas.collection('users').stateChanges()
+  } 
 }
