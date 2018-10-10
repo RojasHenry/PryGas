@@ -11,7 +11,6 @@ import { Facebook } from '@ionic-native/facebook';
 import { GasFirebaseProvider } from '../../providers/gas-firebase/gas-firebase';
 
 import { UserHomePage } from '../user-home/user-home';
-import { LoginPage } from './../login/login';
 import { RegisterPage } from './../register/register';
 
 @Component({
@@ -25,6 +24,11 @@ export class HomePage {
     password : ''
   };
 
+  loginDataDistribuitor = {
+    email : '',
+    password : ''
+  };
+
   userFromSocial:UserModel = {
     email:"",
     password:"",
@@ -33,7 +37,8 @@ export class HomePage {
     latitude: 0,
     longitude: 0,
     phone_cell: null,
-    photo:""
+    photo:"",
+    zone:""
   }
  
   constructor(
@@ -49,6 +54,7 @@ export class HomePage {
   }
 
   loginCorreo(){
+    this.loginData.email.replace(/ /g, "");
     console.log(this.loginData)
     let userType = this.loginVerification(this.loginData)
     switch(userType){
@@ -66,8 +72,10 @@ export class HomePage {
       });
       break;
       case "distribuitor": 
-      this.loginData.email = this.loginData.email+"@mail.com";
-      this.gasProvider.loginCorreo(this.loginData)
+      let email = this.loginData.email+"@mail.com";
+      this.loginDataDistribuitor.email = email+"@mail.com";
+      this.loginDataDistribuitor.password = this.loginData.password;
+      this.gasProvider.loginCorreo(this.loginDataDistribuitor)
       .then(() => {
         this.navCtrl.setRoot(DistribuidorPage);
       })
@@ -114,7 +122,6 @@ export class HomePage {
         .catch(error=>{
           console.log(error)
         })
-       this.navCtrl.setRoot(LoginPage);
       });
     }).catch((error) => { 
       console.log(error) 
@@ -153,8 +160,7 @@ export class HomePage {
       })
     })
   }
-
-  
+ 
   registro(){
     this.navCtrl.push(RegisterPage);
   }

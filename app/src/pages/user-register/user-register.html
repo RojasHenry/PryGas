@@ -32,6 +32,15 @@
         </ion-item>
 
         <ion-item>
+          <ion-label>Zona:</ion-label>
+          <ion-select [(ngModel)]="newUser.zone">
+            <ion-option value="Norte">Norte</ion-option>
+            <ion-option value="Centro">Centro</ion-option>
+            <ion-option value="Sur">Sur</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
           <ion-card>
               <agm-map [latitude]="coordenatesDef.lat" [longitude]="coordenatesDef.long" [zoom]="coordenatesDef.zoom" [zoomControl]="false" [streetViewControl] = "false">
                 <agm-marker [latitude]="coordenatesDef.lat" [longitude]="coordenatesDef.long"></agm-marker>

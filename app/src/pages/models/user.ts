@@ -6,7 +6,8 @@ interface UserModel{
     latitude:number,
     longitude:number,
     phone_cell:number,
-    photo:string
+    photo:string,
+    zone:string
 }
 
 interface DistribuitorModel{
