@@ -1,3 +1,4 @@
+import { DistribuidorPage } from './../pages/distribuidor/distribuidor';
 import { UserHomePage } from './../pages/user-home/user-home';
 import { GasFirebaseProvider } from './../providers/gas-firebase/gas-firebase';
 import { Component, ViewChild } from '@angular/core';
@@ -19,8 +20,14 @@ export class MyApp {
 
    constructor( public app: App,  platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afDb: GasFirebaseProvider,public events: Events) {
     this.afDb.isLogged().then((resp: boolean)=>{
+      let typeUser = localStorage.getItem("type");
       if(resp){
-        this.rootPage = UserHomePage
+        if(typeUser == "user"){
+          this.rootPage = UserHomePage
+        }else{
+          this.rootPage = DistribuidorPage
+        }
+        
       }else{
         this.rootPage = HomePage
       }
@@ -38,15 +45,19 @@ export class MyApp {
 
     events.subscribe('user:logged', (user:UserModel) => {
       this.userLogged = user;
+      localStorage.setItem("type","user");
     });
 
     events.subscribe('distribuitor:logged', (distribuitor:DistribuitorModel) => {
       this.distribuitorLogged = distribuitor;
+      localStorage.setItem("type","distribuitor");
     });
   }
   
   async signOut(){
     await this.afDb.signOut().then((resp)=>{
+      this.userLogged = null;
+      this.distribuitorLogged = null;
       this.nav.setRoot(HomePage);
     })
     .catch((error)=>{

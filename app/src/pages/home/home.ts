@@ -73,7 +73,7 @@ export class HomePage {
       break;
       case "distribuitor": 
       let email = this.loginData.email+"@mail.com";
-      this.loginDataDistribuitor.email = email+"@mail.com";
+      this.loginDataDistribuitor.email = email;
       this.loginDataDistribuitor.password = this.loginData.password;
       this.gasProvider.loginCorreo(this.loginDataDistribuitor)
       .then(() => {
