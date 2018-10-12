@@ -20,20 +20,6 @@ export class UserHomePage {
   zone:any
 
   userData:UserModel;
-  alertOrderGas:any = this.alertCtrl.create({
-    title: 'Solicitud de Gas',
-    message: 'Su solicitud de gas esta siendo procesada..',
-    buttons: [
-      {
-        text: 'Cancelar Solicitud',
-        role: 'cancel',
-        handler: () => {
-
-        }
-      }
-    ],
-    enableBackdropDismiss : false
-  });
 
   coordenatesDef:Coordenates = {
     lat:-0.1991789,
@@ -74,7 +60,21 @@ export class UserHomePage {
   }
 
   orderGas(){
-    this.alertOrderGas.present();
+    let alertOrderGas = this.alertCtrl.create({
+      title: 'Solicitud de Gas',
+      message: 'Su solicitud de gas esta siendo procesada..',
+      buttons: [
+        {
+          text: 'Cancelar Solicitud',
+          role: 'cancel',
+          handler: () => {
+  
+          }
+        }
+      ],
+      enableBackdropDismiss : false
+    });
+    alertOrderGas.present();
   }
 
   getLocation(){

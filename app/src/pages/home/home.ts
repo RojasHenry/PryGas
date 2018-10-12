@@ -20,8 +20,8 @@ import { RegisterPage } from './../register/register';
 export class HomePage {
   //Creacion objeto vacio
   loginData = {
-    email : '',
-    password : ''
+    email : "",
+    password : ""
   };
 
   loginDataDistribuitor = {
@@ -54,7 +54,7 @@ export class HomePage {
   }
 
   loginCorreo(){
-    this.loginData.email.replace(/ /g, "");
+    this.loginData.email = this.loginData.email.trim()
     console.log(this.loginData)
     let userType = this.loginVerification(this.loginData)
     switch(userType){
