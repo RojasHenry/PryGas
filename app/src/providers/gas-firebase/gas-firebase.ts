@@ -70,4 +70,20 @@ export class GasFirebaseProvider {
   async getUserNotExist(){  
     return this.dbGas.collection('users').stateChanges()
   } 
+
+  // resgistrar pedido de gas
+
+  registerOrder(order:Order){
+    
+    let currentdate = new Date(); 
+    let datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds(); 
+    let id = btoa(datetime)
+    console.log(id)
+    //return this.dbGas.collection('orderGas').doc(`${order.zone}`).collection(id).add(order);
+  }
 }

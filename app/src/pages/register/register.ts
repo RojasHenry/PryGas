@@ -43,21 +43,8 @@ export class RegisterPage {
       });
       alert.present();
       return;
+    }else{
+      this.navCtrl.setRoot(UserRegisterPage,{newRegister: this.signupData});
     }
-    // Firebase Signup Code
-    this.gasProvider.createNewUser(this.signupData).then(auth => {
-       //this.navCtrl.setRoot('LoginPage');
-       console.log(auth)
-       this.navCtrl.setRoot(UserRegisterPage,{newRegister: this.signupData});
-    })
-    .catch(err => {
-      // Handle error
-      let alert = this.alertCtrl.create({
-        title: 'Error',
-        message: err.message,
-        buttons: ['OK']
-      });
-      alert.present();
-    });
   }
 }

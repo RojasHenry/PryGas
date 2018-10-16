@@ -32,3 +32,12 @@ interface Coordenates{
     long:number,
     zoom:number
 }
+
+interface Order{
+    zone:string,
+    userUid:string,
+    latitude:number,
+    longitude:number,
+    state:string
+    date:string
+}

@@ -2,7 +2,7 @@ import { UserHomePage } from './../user-home/user-home';
 import { GasFirebaseProvider } from './../../providers/gas-firebase/gas-firebase';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController, AlertController } from 'ionic-angular';
 
 /**
  * Generated class for the UserRegisterPage page.
@@ -37,7 +37,7 @@ export class UserRegisterPage {
     zoom: 15
   }
 
-  constructor(public menuCtrl: MenuController, public navCtrl: NavController, public navParams: NavParams,public gasFirebase:GasFirebaseProvider, public geolocation:Geolocation) {
+  constructor(public menuCtrl: MenuController, public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams,public gasFirebase:GasFirebaseProvider, public geolocation:Geolocation) {
     this.menuCtrl.enable(false, "menuGas");
     this.newRegister = this.navParams.get('newRegister');
     if(this.newRegister){
@@ -56,18 +56,22 @@ export class UserRegisterPage {
 
   completeRegister(){
     console.log(this.newUser);
-
-    this.gasFirebase.loginCorreo(this.newRegister).then((auth)=>{
+    this.gasFirebase.createNewUser(this.newRegister).then(auth => {
       this.gasFirebase.registerUser(this.newUser,auth.user.uid).then((resp)=>{
         console.log(resp)
         this.navCtrl.setRoot(UserHomePage)
       }).catch((error)=>{
         console.log(error)
       })
-    }).catch((error)=>{
-      console.log(error)
-    })
-   
+    }).catch(err => {
+      // Handle error
+      let alert = this.alertCtrl.create({
+        title: 'Error',
+        message: err.message,
+        buttons: ['OK']
+      });
+      alert.present();
+    });
   }
 
   getLocation(){

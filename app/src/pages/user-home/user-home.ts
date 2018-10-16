@@ -19,12 +19,21 @@ export class UserHomePage {
 
   zone:any
 
+  uidUser:any
   userData:UserModel;
 
   coordenatesDef:Coordenates = {
     lat:-0.1991789,
     long:-78.4320597,
     zoom: 15
+  }
+  orderUser:Order = {
+    zone:"",
+    date:"",
+    latitude:0,
+    longitude:0,
+    state:"",
+    userUid: ""
   }
 
   constructor(
@@ -42,6 +51,7 @@ export class UserHomePage {
 
       this.afDb.getSessionUser()
         .then((user)=>{
+          this.uidUser = user.uid
           this.afDb.getUserDataByUid(user.uid)
           .subscribe((userData:any)=>{
             this.userData = userData;
@@ -60,6 +70,27 @@ export class UserHomePage {
   }
 
   orderGas(){
+    this.orderUser.zone = this.userData.zone;
+    this.orderUser.latitude = this.coordenatesDef.lat;
+    this.orderUser.longitude = this.coordenatesDef.long;
+    this.orderUser.userUid = this.uidUser
+    this.orderUser.state = "Peticion"
+    switch(this.userData.zone){
+      case "Norte":
+      this.afDb.registerOrder(this.orderUser)
+      break;
+
+      case "Centro":
+
+      break;
+
+      case "Sur":
+
+      break;
+
+      default :
+      break;
+    }
     let alertOrderGas = this.alertCtrl.create({
       title: 'Solicitud de Gas',
       message: 'Su solicitud de gas esta siendo procesada..',
@@ -68,7 +99,7 @@ export class UserHomePage {
           text: 'Cancelar Solicitud',
           role: 'cancel',
           handler: () => {
-  
+
           }
         }
       ],
