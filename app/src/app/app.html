@@ -7,6 +7,9 @@
             <img *ngIf="userLogged.photo != ''" src="userLogged.photo">
             <img *ngIf="userLogged.photo == ''" src="assets/imgs/user.png">
           </ion-avatar>
+          <ion-avatar item-start *ngIf="distribuitorLogged">
+            <img src="assets/imgs/user.png">
+          </ion-avatar>
           <h2 *ngIf="userLogged || distribuitorLogged" >Bienvenido,</h2>
           <p *ngIf="userLogged ">{{userLogged.name}}  {{userLogged.lastname}}</p>
           <p *ngIf="distribuitorLogged">{{distribuitorLogged.name}}  {{distribuitorLogged.lastname}}</p>

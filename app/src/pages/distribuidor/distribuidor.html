@@ -18,41 +18,18 @@
 </ion-header>
 
 
-<ion-content padding>
-    <ion-card>
-      
-        <ion-item>
-          <ion-avatar item-start>
-            <img src="img/marty-avatar.png">
-          </ion-avatar>
-          <h2>Marty McFly</h2>
-          <p>November 5, 1955</p>
-        </ion-item>
-      
-        <ion-card-content>
-          <p>Wait a minute. Wait a minute, Doc. Uhhh... Are you telling me that you built a time machine... out of a DeLorean?! Whoa. This is heavy.</p>
-        </ion-card-content>
-      
-        <ion-row>
-          <ion-col>
-            <button ion-button icon-start clear small>
-              <ion-icon name="thumbs-up"></ion-icon>
-              <div>12 Likes</div>
-            </button>
-          </ion-col>
-          <ion-col>
-            <button ion-button icon-start clear small>
-              <ion-icon name="text"></ion-icon>
-              <div>4 Comments</div>
-            </button>
-          </ion-col>
-          <ion-col center text-center>
-            <ion-note>
-              11h ago
-            </ion-note>
-          </ion-col>
-        </ion-row>
-      
-      </ion-card>
-
+<ion-content>
+    <ion-list>
+      <div *ngFor="let order of ordersUsers">
+        <ion-card>
+            <ion-item>
+                <ion-icon md="md-person" item-start></ion-icon>
+                <h2 *ngIf="order.userData" >Pedido de: {{order.userData.name}} {{order.userData.lastname}}</h2>
+                <h3 wrap >Codigo Usuario: {{order.userUid}}</h3>
+                <p>{{order.date}}</p>
+                <button ion-button clear item-end>Ver</button>
+              </ion-item>
+        </ion-card>
+      </div>
+    </ion-list>
 </ion-content>

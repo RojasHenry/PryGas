@@ -20,6 +20,8 @@ export class DistribuidorPage {
 
   distribuitorData:DistribuitorModel;
 
+  ordersUsers:any
+
   constructor(public navCtrl: NavController, public navParams: NavParams,public afDb : GasFirebaseProvider,public events: Events, public menuCtrl: MenuController) {
     this.menuCtrl.enable(true, "menuGas");
 
@@ -30,6 +32,7 @@ export class DistribuidorPage {
         this.distribuitorData = distribuitorData;
         this.events.publish('distribuitor:logged', distribuitorData);
         console.log(this.distribuitorData)
+        this.getOrders(this.distribuitorData.zone)
       },(error)=>{
         console.log(error);
       })
@@ -40,6 +43,19 @@ export class DistribuidorPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DistribuidorPage');
+   
+  }
+
+  getOrders(zone:string){
+    this.afDb.getOrdersDistribuitor(zone).subscribe((orders:any)=>{
+      orders.map((order:any)=>{
+        this.afDb.getUserDataByUid(order.userUid).subscribe((user)=>{
+          order.userData = user
+        })
+      })
+      this.ordersUsers = orders
+      console.log(orders)
+    })
   }
 
 }

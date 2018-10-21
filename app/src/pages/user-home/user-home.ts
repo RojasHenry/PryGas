@@ -2,6 +2,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { GasFirebaseProvider } from './../../providers/gas-firebase/gas-firebase';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, MenuController, Events, AlertController } from 'ionic-angular';
+import { database } from 'firebase';
 
 /**
  * Generated class for the UserHomePage page.
@@ -21,6 +22,8 @@ export class UserHomePage {
 
   uidUser:any
   userData:UserModel;
+
+  alertOrderGas:any
 
   coordenatesDef:Coordenates = {
     lat:-0.1991789,
@@ -75,37 +78,50 @@ export class UserHomePage {
     this.orderUser.longitude = this.coordenatesDef.long;
     this.orderUser.userUid = this.uidUser
     this.orderUser.state = "Peticion"
-    switch(this.userData.zone){
-      case "Norte":
-      this.afDb.registerOrder(this.orderUser)
-      break;
+    this.orderUser.date = this.getActualDate()
 
-      case "Centro":
+    this.afDb.registerOrder(this.orderUser)
+    .then(()=>{
+      this.showAlert(this.orderUser)
+      this.afDb.getOrderActual(this.orderUser).subscribe((orderActual:Order)=>{
+        console.log(orderActual)
+        if(orderActual){
+          if(orderActual.state == "Aceptado"){
+            this.alertOrderGas.dismiss()
+          }
+        }
+      },(error)=>{
+        console.log('Error', error);
+      })
+    })
+    .catch((error)=>{
+      console.log('Error', error);
+    })
+  }
 
-      break;
-
-      case "Sur":
-
-      break;
-
-      default :
-      break;
-    }
-    let alertOrderGas = this.alertCtrl.create({
+  showAlert(order:Order){
+    this.alertOrderGas = this.alertCtrl.create({
       title: 'Solicitud de Gas',
       message: 'Su solicitud de gas esta siendo procesada..',
       buttons: [
         {
           text: 'Cancelar Solicitud',
-          role: 'cancel',
           handler: () => {
-
+            order.state = "Cancelado"
+            this.afDb.cancelOrderActual(order)
+            .then((resp)=>{
+              this.alertOrderGas.dismiss();
+            })
+            .catch((error)=>{
+              console.log('Error', error);
+            })
+            return false;
           }
         }
       ],
       enableBackdropDismiss : false
     });
-    alertOrderGas.present();
+    this.alertOrderGas.present();
   }
 
   getLocation(){
@@ -128,6 +144,23 @@ export class UserHomePage {
     })
   }
 
+  getActualDate():any{
+    let currentdate = new Date(); 
+    let datetime = currentdate.getDate() + "/"
+    + (currentdate.getMonth()+1)  + "/" 
+    + currentdate.getFullYear() + " @ "
+    
+    if(currentdate.getMinutes() < 10){
+      datetime += "0"+currentdate.getHours()+ ":"  
+      + currentdate.getMinutes() + ":" 
+      + currentdate.getSeconds(); 
+    }else{
+      datetime += currentdate.getHours() + ":"  
+      + currentdate.getMinutes() + ":" 
+      + currentdate.getSeconds(); 
+    }
+    return datetime
+  }
  
   
 }

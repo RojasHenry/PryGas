@@ -74,16 +74,26 @@ export class GasFirebaseProvider {
   // resgistrar pedido de gas
 
   registerOrder(order:Order){
-    
-    let currentdate = new Date(); 
-    let datetime = currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/" 
-                + currentdate.getFullYear() + " @ "  
-                + currentdate.getHours() + ":"  
-                + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds(); 
-    let id = btoa(datetime)
-    console.log(id)
-    //return this.dbGas.collection('orderGas').doc(`${order.zone}`).collection(id).add(order);
+    let id = btoa(order.date)
+    return this.dbGas.collection('orderGas').doc(`${order.zone}`).collection('pedidos').doc(id).set(order)
+  }
+
+  getOrderActual(order:Order){
+    let id = btoa(order.date)
+    return this.dbGas.collection('orderGas').doc(`${order.zone}`).collection('pedidos').doc(id).valueChanges()
+  }
+
+  cancelOrderActual(order:Order){
+    let id = btoa(order.date)
+    return this.dbGas.collection('orderGas').doc(`${order.zone}`).collection('pedidos').doc(id).set(order)
+  }
+
+  // metodos de distribuidor
+  getOrdersDistribuitor(zone:any){
+    return this.dbGas.collection('orderGas').doc(`${zone}`).collection('pedidos').valueChanges()
+  }
+
+  acceptOrder(){
+
   }
 }
