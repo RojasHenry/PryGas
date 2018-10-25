@@ -1,0 +1,46 @@
+<!--
+  Generated template for the OrderDetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-content>
+  <ion-grid no-padding>
+    <ion-row align-items-center>
+      <ion-col col>
+        <ion-card>
+            <agm-map [latitude]="orderDetail.latitude" [longitude]="orderDetail.longitude" [zoom]="15" [zoomControl]="false" [streetViewControl] = "false">
+              <agm-marker [latitude]="orderDetail.latitude" [longitude]="orderDetail.longitude"></agm-marker>
+            </agm-map>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="userOrder">
+      <ion-col col>
+        <ion-card>
+          <ion-card-content>
+            Nombre: {{userOrder.name}} {{userOrder.lastname}}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="userOrder">
+      <ion-col col>
+        <ion-card>
+          <ion-card-content>
+            Teléfono: {{userOrder.phone_cell}}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-end>
+        <ion-col offset-6 col-3>
+          <button ion-button clear>Ignorar</button>
+        </ion-col>
+        <ion-col col-3>
+          <button ion-button clear>Aceptar</button>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
+</ion-content>

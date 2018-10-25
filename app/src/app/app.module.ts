@@ -1,3 +1,4 @@
+import { OrderDetailsPageModule } from './../pages/order-details/order-details.module';
 import { DistribuidorPageModule } from './../pages/distribuidor/distribuidor.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -62,7 +63,8 @@ firebase.initializeApp(firebaseConfig);
     UserRegisterPageModule,
     RegisterPageModule,
     LoginPageModule,
-    DistribuidorPageModule
+    DistribuidorPageModule,
+    OrderDetailsPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

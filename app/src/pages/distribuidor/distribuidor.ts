@@ -1,6 +1,7 @@
 import { GasFirebaseProvider } from './../../providers/gas-firebase/gas-firebase';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, MenuController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, MenuController, AlertController, ModalController } from 'ionic-angular';
+import { OrderDetailsPage } from '../order-details/order-details';
 
 /**
  * Generated class for the DistribuidorPage page.
@@ -22,7 +23,10 @@ export class DistribuidorPage {
 
   ordersUsers:any
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public afDb : GasFirebaseProvider,public events: Events, public menuCtrl: MenuController) {
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams,
+    public afDb : GasFirebaseProvider,
+    public events: Events, public menuCtrl: MenuController, public modalCtrl: ModalController) {
     this.menuCtrl.enable(true, "menuGas");
 
     this.afDb.getSessionUser()
@@ -56,6 +60,11 @@ export class DistribuidorPage {
       this.ordersUsers = orders
       console.log(orders)
     })
+  }
+
+  reviewOrder(orderSelected:any){
+    const modal = this.modalCtrl.create(OrderDetailsPage,{order: orderSelected})
+    modal.present()
   }
 
 }

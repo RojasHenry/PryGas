@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { DistribuidorPage } from './distribuidor';
+import { OrderDetailsPage } from './order-details';
 
 import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   declarations: [
-    DistribuidorPage,
+    OrderDetailsPage,
   ],
   imports: [
-    IonicPageModule.forChild(DistribuidorPage),
+    IonicPageModule.forChild(OrderDetailsPage),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA4gmYz_ugqt2QSlw3EBBeYRWIJYI_ZK0o'
     })
   ],
 })
-export class DistribuidorPageModule {}
+export class OrderDetailsPageModule {}
