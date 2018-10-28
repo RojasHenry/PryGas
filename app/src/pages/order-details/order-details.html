@@ -36,10 +36,10 @@
     </ion-row>
     <ion-row align-items-end>
         <ion-col offset-6 col-3>
-          <button ion-button clear>Ignorar</button>
+          <button ion-button clear (click)="ignoreOrder()" >Ignorar</button>
         </ion-col>
         <ion-col col-3>
-          <button ion-button clear>Aceptar</button>
+          <button ion-button clear (click)="acceptOrder(orderDetail)" >Aceptar</button>
         </ion-col>
       </ion-row>
   </ion-grid>

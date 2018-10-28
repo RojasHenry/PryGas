@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFirestore } from 'angularfire2/firestore';
 
 import {GooglePlus} from '@ionic-native/google-plus';
@@ -86,14 +85,20 @@ export class GasFirebaseProvider {
   cancelOrderActual(order:Order){
     let id = btoa(order.date)
     return this.dbGas.collection('orderGas').doc(`${order.zone}`).collection('pedidos').doc(id).set(order)
-  }
+  }   
 
   // metodos de distribuidor
   getOrdersDistribuitor(zone:any){
-    return this.dbGas.collection('orderGas').doc(`${zone}`).collection('pedidos').valueChanges()
+    return this.dbGas.collection('orderGas').doc(`${zone}`).collection('pedidos').valueChanges() 
   }
 
-  acceptOrder(){
+  getOrderById(order:any, zone:any){
+    let idOrder = btoa(order.date)
+    return this.dbGas.collection('orderGas').doc(`${zone}`).collection('pedidos').doc(idOrder).valueChanges()  
+  }
 
+  acceptOrder(order:any){
+    let idOrder = btoa(order.date)
+    return this.dbGas.collection('orderGas').doc(`${order.zone}`).collection('pedidos').doc(idOrder).set(order)
   }
 }

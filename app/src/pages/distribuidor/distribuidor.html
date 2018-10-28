@@ -21,7 +21,7 @@
 <ion-content>
     <ion-list>
       <div *ngFor="let order of ordersUsers">
-        <ion-card>
+        <ion-card *ngIf="order.state == 'Solicitado'">
             <ion-item>
                 <ion-icon md="md-person" item-start></ion-icon>
                 <h2 *ngIf="order.userData" >Pedido de: {{order.userData.name}} {{order.userData.lastname}}</h2>

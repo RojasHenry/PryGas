@@ -2,7 +2,6 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { GasFirebaseProvider } from './../../providers/gas-firebase/gas-firebase';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, MenuController, Events, AlertController } from 'ionic-angular';
-import { database } from 'firebase';
 
 /**
  * Generated class for the UserHomePage page.
@@ -77,7 +76,7 @@ export class UserHomePage {
     this.orderUser.latitude = this.coordenatesDef.lat;
     this.orderUser.longitude = this.coordenatesDef.long;
     this.orderUser.userUid = this.uidUser
-    this.orderUser.state = "Peticion"
+    this.orderUser.state = "Solicitado"
     this.orderUser.date = this.getActualDate()
 
     this.afDb.registerOrder(this.orderUser)

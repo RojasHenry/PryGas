@@ -1,6 +1,6 @@
 import { GasFirebaseProvider } from './../../providers/gas-firebase/gas-firebase';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, MenuController, AlertController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, MenuController, ModalController} from 'ionic-angular';
 import { OrderDetailsPage } from '../order-details/order-details';
 
 /**
@@ -19,6 +19,8 @@ import { OrderDetailsPage } from '../order-details/order-details';
 
 export class DistribuidorPage {
 
+  distribuitorUid:any
+
   distribuitorData:DistribuitorModel;
 
   ordersUsers:any
@@ -31,8 +33,8 @@ export class DistribuidorPage {
 
     this.afDb.getSessionUser()
     .then((user)=>{
-      this.afDb.getDistribuitorDataByUid(user.uid)
-      .subscribe((distribuitorData:any)=>{
+      this.distribuitorUid = user.uid
+      this.afDb.getDistribuitorDataByUid(user.uid).subscribe((distribuitorData:any)=>{
         this.distribuitorData = distribuitorData;
         this.events.publish('distribuitor:logged', distribuitorData);
         console.log(this.distribuitorData)
@@ -52,6 +54,7 @@ export class DistribuidorPage {
 
   getOrders(zone:string){
     this.afDb.getOrdersDistribuitor(zone).subscribe((orders:any)=>{
+      console.log(orders)
       orders.map((order:any)=>{
         this.afDb.getUserDataByUid(order.userUid).subscribe((user)=>{
           order.userData = user
@@ -63,7 +66,14 @@ export class DistribuidorPage {
   }
 
   reviewOrder(orderSelected:any){
-    const modal = this.modalCtrl.create(OrderDetailsPage,{order: orderSelected})
+    const modal = this.modalCtrl.create(OrderDetailsPage,
+      {order: orderSelected, zone: this.distribuitorData.zone, uidDist:this.distribuitorUid})
+      
+    modal.onDidDismiss(data => {
+      if(data){
+        console.log(data);
+      }
+    });
     modal.present()
   }
 
