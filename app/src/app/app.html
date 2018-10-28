@@ -18,10 +18,13 @@
     </ion-header>
     <ion-content>
       <ion-list>
-        <button ion-item >
+        <button ion-item menuClose (click)="gotoHome()">
+          Inicio
+        </button>
+        <button ion-item menuClose (click)="gotoProfile()">
           Perfil
         </button>
-        <button ion-item>
+        <button ion-item menuClose *ngIf="typeUser == 'user'" (click)="gotoLocation()">
           Mi ubicación
         </button>
         <button ion-item menuClose (click)="signOut()">

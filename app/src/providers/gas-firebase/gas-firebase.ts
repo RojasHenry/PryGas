@@ -33,6 +33,10 @@ export class GasFirebaseProvider {
     return this.dbGas.collection('users').doc(`${uid}`).set(registerUser);
   }
 
+  updateUser(updateUser:UserModel,uid){
+    return this.dbGas.collection('users').doc(`${uid}`).set(updateUser);
+  }
+
   signOut(){
     return this.afAuth.auth.signOut()
   }
@@ -47,6 +51,10 @@ export class GasFirebaseProvider {
 
   getDistribuitorDataByUid(uid:string){
     return this.dbGas.collection('distributor').doc(`${uid}`).valueChanges()
+  }
+
+  updateDistribuitorData(updateDistr,uid:string){
+    return this.dbGas.collection('distributor').doc(`${uid}`).set(updateDistr)
   }
 
   isLoggedIn() {

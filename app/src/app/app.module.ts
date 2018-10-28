@@ -1,5 +1,3 @@
-import { OrderDetailsPageModule } from './../pages/order-details/order-details.module';
-import { DistribuidorPageModule } from './../pages/distribuidor/distribuidor.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -26,6 +24,10 @@ import { LoginPageModule } from './../pages/login/login.module';
 import { UserRegisterPageModule } from './../pages/user-register/user-register.module';
 import { UserHomePageModule } from './../pages/user-home/user-home.module';
 import { RegisterPageModule } from './../pages/register/register.module';
+import { UserProfilePageModule } from '../pages/user-profile/user-profile.module';
+import { UserLocationPageModule } from './../pages/user-location/user-location.module';
+import { OrderDetailsPageModule } from './../pages/order-details/order-details.module';
+import { DistribuidorPageModule } from './../pages/distribuidor/distribuidor.module';
 
 export const firebaseConfig = {
   /*
@@ -64,7 +66,9 @@ firebase.initializeApp(firebaseConfig);
     RegisterPageModule,
     LoginPageModule,
     DistribuidorPageModule,
-    OrderDetailsPageModule
+    OrderDetailsPageModule,
+    UserLocationPageModule,
+    UserProfilePageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

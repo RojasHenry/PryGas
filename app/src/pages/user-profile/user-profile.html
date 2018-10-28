@@ -1,0 +1,56 @@
+<!--
+  Generated template for the UserProfilePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-toolbar>
+    <ion-buttons start>
+      <button ion-button icon-only color="royal" menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Perfil de usuario</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-list *ngIf="user">
+      <ion-item>
+        <ion-label stacked>Nombre:</ion-label>
+        <ion-input type="text" [(ngModel)]="user.name" ></ion-input>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label stacked>Apellido:</ion-label>
+        <ion-input type="text" [(ngModel)]="user.lastname"></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="typeUser == 'user'">
+        <ion-label stacked>Teléfono contacto:</ion-label>
+        <ion-input type="number" [(ngModel)]="user.phone_cell"></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="typeUser != 'user'">
+          <ion-label stacked>Placa: {{user.plaque}}</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Zona:</ion-label>
+        <ion-select [(ngModel)]="user.zone">
+          <ion-option value="Norte">Norte</ion-option>
+          <ion-option value="Centro">Centro</ion-option>
+          <ion-option value="Sur">Sur</ion-option>
+        </ion-select>
+      </ion-item>
+
+    </ion-list>
+
+    <div padding>
+      <button block ion-button [disabled]="!enable" (click)="saveDataUser(user)">Actualizar Perfil</button>
+    </div>
+</ion-content>

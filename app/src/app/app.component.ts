@@ -1,12 +1,15 @@
-import { DistribuidorPage } from './../pages/distribuidor/distribuidor';
-import { UserHomePage } from './../pages/user-home/user-home';
-import { GasFirebaseProvider } from './../providers/gas-firebase/gas-firebase';
+import { UserLocationPage } from './../pages/user-location/user-location';
 import { Component, ViewChild } from '@angular/core';
 import { Platform, App, NavController, Nav, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
+import { UserProfilePage } from './../pages/user-profile/user-profile';
+import { DistribuidorPage } from './../pages/distribuidor/distribuidor';
+import { UserHomePage } from './../pages/user-home/user-home';
+import { GasFirebaseProvider } from './../providers/gas-firebase/gas-firebase';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -18,11 +21,13 @@ export class MyApp {
   userLogged:UserModel;
   distribuitorLogged:DistribuitorModel;
 
+  typeUser:any
+
    constructor( public app: App,  platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afDb: GasFirebaseProvider,public events: Events) {
     this.afDb.isLogged().then((resp: boolean)=>{
-      let typeUser = localStorage.getItem("type");
+      this.typeUser = localStorage.getItem("type");
       if(resp){
-        if(typeUser == "user"){
+        if(this.typeUser == "user"){
           this.rootPage = UserHomePage
         }else{
           this.rootPage = DistribuidorPage
@@ -52,6 +57,22 @@ export class MyApp {
       this.distribuitorLogged = distribuitor;
       localStorage.setItem("type","distribuitor");
     });
+  }
+
+  gotoProfile(){
+    this.nav.setRoot(UserProfilePage,{typeUser:this.typeUser})
+  }
+
+  gotoLocation(){
+    this.nav.setRoot(UserLocationPage)
+  }
+
+  gotoHome(){
+    if(this.typeUser == "user"){
+      this.nav.setRoot(UserHomePage)
+    }else{
+      this.nav.setRoot(DistribuidorPage)
+    }
   }
   
   async signOut(){
