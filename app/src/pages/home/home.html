@@ -1,14 +1,15 @@
 <ion-header>
 	<ion-navbar>
 		<ion-title>
-			Ionic Blank
+			AppGas Quito
 		</ion-title>
 	</ion-navbar>
 </ion-header>
 
 <ion-content padding>
+	<img src="assets/imgs/logot.png">
 	<ion-list>
-		<ion-item>
+		<ion-item class="la">
 				<ion-icon class="ic" ios="ios-mail" md="md-mail" item-left></ion-icon>
 				<ion-label class="lab" stacked >Email:</ion-label>
 				<ion-input type="text" [(ngModel)]="loginData.email"></ion-input>
@@ -18,6 +19,7 @@
 			<ion-label class="lab" stacked >Password:</ion-label>
 			<ion-input type="password" [(ngModel)]="loginData.password"></ion-input>
 		</ion-item>
+		<ion-item class="la" ></ion-item>
 	</ion-list>
 	<div text-center>
 		<button ion-button class="btn" (click)="loginCorreo()" [disabled]="!loginData.email || !loginData.password" block outline>Entrar</button>
@@ -28,7 +30,7 @@
 				<p class="pregunta">¿No tienes una cuenta? -></p> 
 			</ion-col>
 			<ion-col col-4>
-				<a class="reg" (click)="registro()">Registrate</a>
+				<p (click)="registro()"><a class="reg">Registrate</a></p>
 			</ion-col>
 		</ion-row>
 		<ion-row>

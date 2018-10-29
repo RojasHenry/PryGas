@@ -19,3 +19,42 @@
     padding-right: 8px;
     border-bottom: none;
 }
+
+ion-content{
+	background: linear-gradient(0deg,#071918,#EFFBFB);
+}
+
+.btn{
+	border-radius: 25px;
+	border:solid 3px #FFFFFF;
+	color: #FFFFFF;
+}
+
+.la{
+	background-color: transparent;
+
+}
+
+// .item-input-has-focus .label-md[stacked],
+// .input-has-focus .label-md[stacked],
+// .item-input-has-focus .label-md[floating],
+// .input-has-focus .label-md[floating],
+// {
+// color: red !important;
+// }
+
+.lab[stacked], .lab[floating]{
+	color: #FFFFFF !important;
+
+}
+img{
+	weight: 250px;
+	width: 250px;
+	padding-left: 80px;
+	//padding-bottom: 50px;
+}
+
+// .scroll-content{
+// 	overflow-y: hidden;
+// }
+

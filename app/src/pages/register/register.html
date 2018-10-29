@@ -20,18 +20,20 @@
     <ion-list>
       <ion-item class="la">
         <ion-icon class="ic" ios="ios-mail" md="md-mail" item-left></ion-icon>
-        <ion-label stacked>Email:</ion-label>
+        <ion-label class="lab" stacked>Email:</ion-label>
         <ion-input type="email" [(ngModel)]="signupData.email"></ion-input>
       </ion-item>
       <ion-item class="la">
         <ion-icon class="ic" name="key" item-left></ion-icon>
-        <ion-label stacked>Password:</ion-label>
+        <ion-label class="lab" stacked>Password:</ion-label>
         <ion-input type="password" [(ngModel)]="signupData.password"></ion-input>
       </ion-item>
       <ion-item class="la">
-        <ion-label stacked>Repetir Password:</ion-label>
+         <ion-icon class="ic" name="" item-left></ion-icon>
+        <ion-label class="lab" stacked>Repetir Password:</ion-label>
         <ion-input type="password" [(ngModel)]="signupData.passwordRetyped"></ion-input>
       </ion-item>
+      <ion-item class="la"></ion-item>
     </ion-list>
     <div text-center>
       <button ion-button class="btn" (click)="registro()" [disabled]="!signupData.email || !signupData.password || !signupData.passwordRetyped" block outline>Signup</button>
