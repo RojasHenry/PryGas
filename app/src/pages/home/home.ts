@@ -107,8 +107,8 @@ export class HomePage {
         this.userFromSocial.name = resp['displayName']
         this.userFromSocial.photo = resp['photoURL']
         this.gasProvider.getUserNotExist(uid)
-        .subscribe((resp)=>{
-          if(resp){
+        .subscribe((respUser)=>{
+          if(respUser){
             this.navCtrl.setRoot(UserHomePage)
           }else{
             this.navCtrl.setRoot(UserRegisterPage,{userData: this.userFromSocial, typeRegis:"socialuser", uidSocial: uid})
@@ -132,8 +132,8 @@ export class HomePage {
         this.userFromSocial.name = resp['displayName']
         this.userFromSocial.photo = resp['photoURL']
         this.gasProvider.getUserNotExist(uid)
-        .subscribe((resp)=>{
-          if(resp){
+        .subscribe((respUser)=>{
+          if(respUser){
             this.navCtrl.setRoot(UserHomePage)
           }else{
             this.navCtrl.setRoot(UserRegisterPage,{userData: this.userFromSocial, typeRegis:"socialuser", uidSocial: uid})
