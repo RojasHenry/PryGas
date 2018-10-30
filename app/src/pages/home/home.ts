@@ -116,7 +116,7 @@ export class HomePage {
                 this.navCtrl.setRoot(UserHomePage)
               }
             })
-            this.navCtrl.setRoot(UserRegisterPage,{userData: this.userFromSocial})
+            this.navCtrl.setRoot(UserRegisterPage,{userData: this.userFromSocial, typeRegis:"socialuser", uidSocial: uid})
           })
         })
         .catch(error=>{
@@ -149,7 +149,7 @@ export class HomePage {
                 this.navCtrl.setRoot(UserHomePage)
               }
             })
-            this.navCtrl.setRoot(UserRegisterPage,{userData: this.userFromSocial})
+            this.navCtrl.setRoot(UserRegisterPage,{userData: this.userFromSocial, typeRegis:"socialuser", uidSocial: uid})
           })
         })
         .catch(error=>{

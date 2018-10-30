@@ -44,7 +44,7 @@ export class RegisterPage {
       alert.present();
       return;
     }else{
-      this.navCtrl.setRoot(UserRegisterPage,{newRegister: this.signupData});
+      this.navCtrl.setRoot(UserRegisterPage,{newRegister: this.signupData, typeRegis:"newuser"});
     }
   }
 }

@@ -37,14 +37,20 @@ export class UserRegisterPage {
     zoom: 15
   }
 
+  typeRegist:any
+  uidSocial:any
+
   constructor(public menuCtrl: MenuController, public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams,public gasFirebase:GasFirebaseProvider, public geolocation:Geolocation) {
     this.menuCtrl.enable(false, "menuGas");
-    this.newRegister = this.navParams.get('newRegister');
-    if(this.newRegister){
+    this.typeRegist = this.navParams.get('typeRegis');
+
+    if(this.typeRegist == "newuser"){
+      this.newRegister = this.navParams.get('newRegister');
       this.newUser.email = this.newRegister.email;
       this.newUser.password = this.newRegister.password;
     }else{
       this.newUser = this.navParams.get('userData')
+      this.uidSocial = this.navParams.get('uidSocial')
     }
     
     this.getLocation();
@@ -56,22 +62,38 @@ export class UserRegisterPage {
 
   completeRegister(){
     console.log(this.newUser);
-    this.gasFirebase.createNewUser(this.newRegister).then(auth => {
-      this.gasFirebase.registerUser(this.newUser,auth.user.uid).then((resp)=>{
+    if(this.typeRegist == "newuser"){
+      this.gasFirebase.createNewUser(this.newRegister).then(auth => {
+        this.gasFirebase.registerUser(this.newUser,auth.user.uid).then((resp)=>{
+          console.log(resp)
+          this.navCtrl.setRoot(UserHomePage)
+        }).catch((error)=>{
+          console.log(error)
+        })
+      }).catch(err => {
+        // Handle error
+        let alert = this.alertCtrl.create({
+          title: 'Error',
+          message: err.message,
+          buttons: ['OK']
+        });
+        alert.present();
+      });
+    }else{
+      this.gasFirebase.registerUser(this.newUser,this.uidSocial).then((resp)=>{
         console.log(resp)
         this.navCtrl.setRoot(UserHomePage)
       }).catch((error)=>{
         console.log(error)
+        // Handle error
+        let alert = this.alertCtrl.create({
+          title: 'Error',
+          message: error.message,
+          buttons: ['OK']
+        });
+        alert.present();
       })
-    }).catch(err => {
-      // Handle error
-      let alert = this.alertCtrl.create({
-        title: 'Error',
-        message: err.message,
-        buttons: ['OK']
-      });
-      alert.present();
-    });
+    }
   }
 
   getLocation(){
