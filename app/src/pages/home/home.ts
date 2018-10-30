@@ -50,7 +50,6 @@ export class HomePage {
     public toastCtrl: ToastController,
     public afAuth: AngularFireAuth) {
     this.menuCtrl.enable(false, "menuGas");
-    
   }
 
   loginCorreo(){
@@ -108,7 +107,7 @@ export class HomePage {
         this.userFromSocial.photo = resp['photoURL']
         this.gasProvider.getUserNotExist(uid)
         .subscribe((respUser)=>{
-          if(respUser){
+          if(respUser.exists){
             this.navCtrl.setRoot(UserHomePage)
           }else{
             this.navCtrl.setRoot(UserRegisterPage,{userData: this.userFromSocial, typeRegis:"socialuser", uidSocial: uid})
@@ -133,7 +132,7 @@ export class HomePage {
         this.userFromSocial.photo = resp['photoURL']
         this.gasProvider.getUserNotExist(uid)
         .subscribe((respUser)=>{
-          if(respUser){
+          if(respUser.exists){
             this.navCtrl.setRoot(UserHomePage)
           }else{
             this.navCtrl.setRoot(UserRegisterPage,{userData: this.userFromSocial, typeRegis:"socialuser", uidSocial: uid})
