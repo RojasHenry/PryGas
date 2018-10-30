@@ -82,12 +82,6 @@ export class UserRegisterPage {
     }else{
       this.gasFirebase.registerUser(this.newUser,this.uidSocial).then((resp)=>{
         console.log(resp)
-        let alert = this.alertCtrl.create({
-          title: 'Error',
-          message: "llego",
-          buttons: ['OK']
-        });
-        alert.present();
         this.navCtrl.setRoot(UserHomePage)
       }).catch((error)=>{
         console.log(error)

@@ -74,8 +74,8 @@ export class GasFirebaseProvider {
     return this.dbGas.collection('distributor', ref => ref.where('zone','==', zone)).valueChanges()
   }
 
-  async getUserNotExist(){  
-    return this.dbGas.collection('users').stateChanges()
+  getUserNotExist(uid){  
+    return this.dbGas.collection('users').doc(uid).get()
   } 
 
   // resgistrar pedido de gas

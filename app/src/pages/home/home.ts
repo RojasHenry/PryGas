@@ -106,21 +106,13 @@ export class HomePage {
         this.userFromSocial.email = resp['email']
         this.userFromSocial.name = resp['displayName']
         this.userFromSocial.photo = resp['photoURL']
-        this.gasProvider.getUserNotExist()
-        .then(resp=>{
-          resp.subscribe((data)=>{
-            console.log(data)
-            data.map(user=>{
-              const uidUserData = user.payload.doc.id
-              if(uidUserData == uid){
-                this.navCtrl.setRoot(UserHomePage)
-              }
-            })
+        this.gasProvider.getUserNotExist(uid)
+        .subscribe((resp)=>{
+          if(resp){
+            this.navCtrl.setRoot(UserHomePage)
+          }else{
             this.navCtrl.setRoot(UserRegisterPage,{userData: this.userFromSocial, typeRegis:"socialuser", uidSocial: uid})
-          })
-        })
-        .catch(error=>{
-          console.log(error)
+          }
         })
       });
     }).catch((error) => { 
@@ -139,21 +131,13 @@ export class HomePage {
         this.userFromSocial.email = resp['email']
         this.userFromSocial.name = resp['displayName']
         this.userFromSocial.photo = resp['photoURL']
-        this.gasProvider.getUserNotExist()
-        .then(resp=>{
-          resp.subscribe((data)=>{
-            console.log(data)
-            data.map(user=>{
-              const uidUserData = user.payload.doc.id
-              if(uidUserData == uid){
-                this.navCtrl.setRoot(UserHomePage)
-              }
-            })
+        this.gasProvider.getUserNotExist(uid)
+        .subscribe((resp)=>{
+          if(resp){
+            this.navCtrl.setRoot(UserHomePage)
+          }else{
             this.navCtrl.setRoot(UserRegisterPage,{userData: this.userFromSocial, typeRegis:"socialuser", uidSocial: uid})
-          })
-        })
-        .catch(error=>{
-          console.log(error)
+          }
         })
       }).catch(ns=>{
         alert("NOT SUCC")
