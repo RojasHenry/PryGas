@@ -80,6 +80,13 @@ export class UserRegisterPage {
         alert.present();
       });
     }else{
+      let alert = this.alertCtrl.create({
+        title: 'Error',
+        message: this.newUser + this.uidSocial,
+        buttons: ['OK']
+      });
+      alert.present();
+      /*
       this.gasFirebase.registerUser(this.newUser,this.uidSocial).then((resp)=>{
         console.log(resp)
         this.navCtrl.setRoot(UserHomePage)
@@ -92,7 +99,7 @@ export class UserRegisterPage {
           buttons: ['OK']
         });
         alert.present();
-      })
+      })*/
     }
   }
 
