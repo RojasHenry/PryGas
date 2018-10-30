@@ -20,27 +20,27 @@
 
 <ion-content padding>
     <ion-list *ngIf="user">
-      <ion-item>
-        <ion-label stacked>Nombre:</ion-label>
+      <ion-item class="la">
+        <ion-label class="lab" stacked>Nombre:</ion-label>
         <ion-input type="text" [(ngModel)]="user.name" ></ion-input>
       </ion-item>
     
-      <ion-item>
-        <ion-label stacked>Apellido:</ion-label>
+      <ion-item class="la">
+        <ion-label class="lab" stacked>Apellido:</ion-label>
         <ion-input type="text" [(ngModel)]="user.lastname"></ion-input>
       </ion-item>
 
-      <ion-item *ngIf="typeUser == 'user'">
-        <ion-label stacked>Teléfono contacto:</ion-label>
+      <ion-item class="la" *ngIf="typeUser == 'user'">
+        <ion-label class="lab" stacked>Teléfono contacto:</ion-label>
         <ion-input type="number" [(ngModel)]="user.phone_cell"></ion-input>
       </ion-item>
 
-      <ion-item *ngIf="typeUser != 'user'">
+      <ion-item class="la" *ngIf="typeUser != 'user'">
           <ion-label stacked>Placa: {{user.plaque}}</ion-label>
       </ion-item>
 
-      <ion-item>
-        <ion-label>Zona:</ion-label>
+      <ion-item class="la">
+        <ion-label class="lab" stacked >Zona:</ion-label>
         <ion-select [(ngModel)]="user.zone">
           <ion-option value="Norte">Norte</ion-option>
           <ion-option value="Centro">Centro</ion-option>
@@ -51,6 +51,6 @@
     </ion-list>
 
     <div padding>
-      <button block ion-button [disabled]="!enable" (click)="saveDataUser(user)">Actualizar Perfil</button>
+      <button class="btn" ion-button block outline [disabled]="!enable" (click)="saveDataUser(user)">Actualizar Perfil</button>
     </div>
 </ion-content>

@@ -22,7 +22,7 @@
   <ion-grid>
     <ion-row align-items-center>
         <ion-col col>
-            <ion-item>
+            <ion-item class="la">
                 <ion-card *ngIf="userU">
                     <agm-map [latitude]="userU.latitude" [longitude]="userU.longitude" [zoom]="14" [zoomControl]="false" [streetViewControl] = "false">
                       <agm-marker [latitude]="userU.latitude" [longitude]="userU.longitude"></agm-marker>
@@ -39,6 +39,6 @@
   </ion-grid>
 
   <div padding>
-      <button block ion-button [disabled]="!enable" (click)="saveLocationUser(userU)">Actualizar Ubicación</button>
+      <button class="btn" ion-button block outline [disabled]="!enable" (click)="saveLocationUser(userU)">Actualizar Ubicación</button>
     </div>
 </ion-content>
