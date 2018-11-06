@@ -152,8 +152,13 @@ export class HomePage {
     let emailNumber:string = loginData.email
     let data:string[] = emailNumber.split("@")
     if(data.length > 1){
-      console.log("es usuario")
-      return 'user'
+      if(data[1] == "mail.com" || data[0].match(/^-{0,1}\d+$/)){
+        console.log("Usuario no valido")
+        return 'Usuario no valido'
+      }else{
+        console.log("es usuario")
+        return 'user'
+      }
     } else{
       if(data[0].match(/^-{0,1}\d+$/)){
         if(data[0].length == 10){

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { GasFirebaseProvider } from './../../providers/gas-firebase/gas-firebase';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Diagnostic } from '@ionic-native/diagnostic';
 
 /**
  * Generated class for the UserLocationPage page.
@@ -22,7 +23,7 @@ export class UserLocationPage {
 
   enable:boolean = true
 
-  constructor(public navCtrl: NavController, public geolocation: Geolocation, public navParams: NavParams, public afDb : GasFirebaseProvider, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, private diagnostic: Diagnostic, public geolocation: Geolocation, public navParams: NavParams, public afDb : GasFirebaseProvider, public alertCtrl: AlertController) {
     this.afDb.getSessionUser()
     .then((user)=>{
       this.uidUser = user.uid
@@ -33,9 +34,23 @@ export class UserLocationPage {
       },(error)=>{
         console.log(error);
       })
-    }).catch((error)=>{
+    })
+    .catch((error)=>{
       console.log(error);
     })
+
+    this.diagnostic.isGpsLocationEnabled()
+    .then((enabled)=>{
+      if(enabled){
+        this.getLocation();
+      }else{
+        this.presentConfirm("Encender GPS por favor");
+      }
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+    
   }
 
   ionViewDidLoad() {
@@ -52,6 +67,7 @@ export class UserLocationPage {
       console.log('Error getting location', error);
     })
   }
+
   saveLocationUser(user:UserModel){
     this.enable = false
     console.log(user)
@@ -78,5 +94,13 @@ export class UserLocationPage {
     });
     alert.present();
   }
+
+  presentConfirm(message) {
+    let alert = this.alertCtrl.create({
+      title: 'Ubicación',
+      message: message
+    });
+    alert.present();
+}
 
 }
