@@ -96,7 +96,7 @@
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.800966370931-i0ibeumsfk1bltti65f8jv79tcm565hd" />
         <variable name="PLAY_SERVICES_VERSION" value="11.8.0" />
     </plugin>
+    <plugin name="cordova.plugins.diagnostic" spec="^4.0.10" />
     <engine name="ios" spec="4.5.5" />
-    <engine name="android" spec="6.4.0" />
-    <plugin name="cordova.plugins.diagnostic" spec="4.0.10" />
+    <engine name="android" spec="^7.1.1" />
 </widget>
