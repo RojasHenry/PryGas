@@ -97,6 +97,7 @@
         <variable name="PLAY_SERVICES_VERSION" value="11.8.0" />
     </plugin>
     <plugin name="cordova.plugins.diagnostic" spec="^4.0.10" />
+    <plugin name="cordova-plugin-request-location-accuracy" spec="^2.2.3" />
     <engine name="ios" spec="4.5.5" />
     <engine name="android" spec="^7.1.1" />
 </widget>
