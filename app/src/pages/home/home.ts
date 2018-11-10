@@ -60,6 +60,7 @@ export class HomePage {
       case "user" : 
       this.gasProvider.loginCorreo(this.loginData)
       .then(() => {
+        localStorage.setItem("type","user");
         this.navCtrl.setRoot(UserHomePage);
       })
       .catch(err => {
@@ -76,6 +77,7 @@ export class HomePage {
       this.loginDataDistribuitor.password = this.loginData.password;
       this.gasProvider.loginCorreo(this.loginDataDistribuitor)
       .then(() => {
+        localStorage.setItem("type","distribuitor");
         this.navCtrl.setRoot(DistribuidorPage);
       })
       .catch(err => {
@@ -108,8 +110,10 @@ export class HomePage {
         this.gasProvider.getUserNotExist(uid)
         .subscribe((respUser)=>{
           if(respUser.exists){
+            localStorage.setItem("type","user");
             this.navCtrl.setRoot(UserHomePage)
           }else{
+            localStorage.setItem("type","userNoRegister");
             this.navCtrl.setRoot(UserRegisterPage,{userData: this.userFromSocial, typeRegis:"socialuser", uidSocial: uid})
           }
         })
@@ -133,8 +137,10 @@ export class HomePage {
         this.gasProvider.getUserNotExist(uid)
         .subscribe((respUser)=>{
           if(respUser.exists){
+            localStorage.setItem("type","user");
             this.navCtrl.setRoot(UserHomePage)
           }else{
+            localStorage.setItem("type","userNoRegister");
             this.navCtrl.setRoot(UserRegisterPage,{userData: this.userFromSocial, typeRegis:"socialuser", uidSocial: uid})
           }
         })
@@ -152,7 +158,7 @@ export class HomePage {
     let emailNumber:string = loginData.email
     let data:string[] = emailNumber.split("@")
     if(data.length > 1){
-      if(data[1] == "mail.com" || data[0].match(/^-{0,1}\d+$/)){
+      if(data[1] == "mail.com" && data[0].match(/^-{0,1}\d+$/)){
         console.log("Usuario no valido")
         return 'Usuario no valido'
       }else{

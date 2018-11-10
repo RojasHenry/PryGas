@@ -87,6 +87,13 @@ $colors: (
 @import "roboto";
 @import "noto-sans";
 
+.select-disabled, .item-select-disabled ion-label {
+  opacity: unset !important;
+}
+
+input[disabled]{
+  opacity: unset !important;
+}
 
 @media only screen and (max-height: 900px) and (max-width: 600px) {
   .md .modal-wrapper {

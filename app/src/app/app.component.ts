@@ -25,14 +25,28 @@ export class MyApp {
 
    constructor( public app: App,  platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afDb: GasFirebaseProvider,public events: Events) {
     this.afDb.isLogged().then((resp: boolean)=>{
-      this.typeUser = localStorage.getItem("type");
       if(resp){
-        if(this.typeUser == "user"){
-          this.rootPage = UserHomePage
-        }else{
-          this.rootPage = DistribuidorPage
-        }
+        this.typeUser = localStorage.getItem("type");
         
+        switch(this.typeUser){
+          case "user":
+          localStorage.setItem("type","user");
+          this.rootPage = UserHomePage
+          break;
+
+          case "distribuitor":
+          localStorage.setItem("type","distribuitor");
+          this.rootPage = DistribuidorPage
+          break;
+
+          case "userNoRegister":
+          this.rootPage = HomePage
+          break;
+
+          default:
+          this.rootPage = HomePage
+          break;
+        }
       }else{
         this.rootPage = HomePage
       }
@@ -40,6 +54,7 @@ export class MyApp {
     .catch((error)=>{
       console.log(error)
     })
+    
     platform.ready().then(() => {
       
       // Okay, so the platform is ready and our plugins are available.
@@ -51,11 +66,13 @@ export class MyApp {
     events.subscribe('user:logged', (user:UserModel) => {
       this.userLogged = user;
       localStorage.setItem("type","user");
+      this.typeUser = "user"
     });
 
     events.subscribe('distribuitor:logged', (distribuitor:DistribuitorModel) => {
       this.distribuitorLogged = distribuitor;
       localStorage.setItem("type","distribuitor");
+      this.typeUser = "distribuitor"
     });
   }
 
@@ -76,6 +93,7 @@ export class MyApp {
   }
   
   async signOut(){
+    localStorage.setItem("type","");
     await this.afDb.signOut().then((resp)=>{
       this.userLogged = null;
       this.distribuitorLogged = null;

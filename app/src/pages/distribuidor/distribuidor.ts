@@ -37,7 +37,6 @@ export class DistribuidorPage {
       this.afDb.getDistribuitorDataByUid(user.uid).subscribe((distribuitorData:any)=>{
         this.distribuitorData = distribuitorData;
         this.events.publish('distribuitor:logged', distribuitorData);
-        localStorage.setItem("type","distribuitor");
         console.log(this.distribuitorData)
         this.getOrders(this.distribuitorData.zone)
       },(error)=>{

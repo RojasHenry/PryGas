@@ -48,7 +48,7 @@ export class UserHomePage {
     public alertCtrl: AlertController) {
 
       this.getLocation();
-      this.zone = 'sur'
+      //this.zone = 'sur'
       this.menuCtrl.enable(true, "menuGas");
 
       this.afDb.getSessionUser()
@@ -58,7 +58,6 @@ export class UserHomePage {
           .subscribe((userData:any)=>{
             this.userData = userData;
             this.events.publish('user:logged', userData);
-            localStorage.setItem("type","user");
             console.log(this.userData)
           },(error)=>{
             console.log(error);
