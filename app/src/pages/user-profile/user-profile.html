@@ -21,11 +21,12 @@
 <ion-content padding>
     <ion-list *ngIf="user">
       <ion-item class="la">
-        <ion-label class="lab" stacked>Nombre:</ion-label>
+        <ion-label class="lab"  *ngIf="typeUser == 'user' || typeUser == 'distribuitor'" stacked>Nombre:</ion-label>
+        <ion-label class="lab"  *ngIf="userSoc == 'userSocial'" stacked>Nombre de Usuario:</ion-label>
         <ion-input type="text" [(ngModel)]="user.name" [disabled]="(typeUser != 'user') ? true : false" ></ion-input>
       </ion-item>
     
-      <ion-item class="la">
+      <ion-item class="la" *ngIf="!userSoc">
         <ion-label class="lab" stacked>Apellido:</ion-label>
         <ion-input type="text" [(ngModel)]="user.lastname"  [disabled]="(typeUser != 'user') ? true : false"></ion-input>
       </ion-item>
@@ -40,14 +41,14 @@
           <ion-input type="text" [(ngModel)]="user.plaque" [disabled]="(typeUser != 'user') ? true : false"></ion-input>
       </ion-item>
 
-      <ion-item class="la">
+      <!-- <ion-item class="la">
         <ion-label class="lab" stacked >Zona:</ion-label>
         <ion-select [(ngModel)]="user.zone"  [disabled]="(typeUser != 'user') ? true : false">
           <ion-option value="Norte">Norte</ion-option>
           <ion-option value="Centro">Centro</ion-option>
           <ion-option value="Sur">Sur</ion-option>
         </ion-select>
-      </ion-item>
+      </ion-item> -->
 
     </ion-list>
 

@@ -35,7 +35,8 @@ export class UserHomePage {
     latitude:0,
     longitude:0,
     state:"",
-    userUid: ""
+    userUid: "",
+    numberGas:0
   }
 
   constructor(
@@ -72,7 +73,6 @@ export class UserHomePage {
   }
 
   orderGas(){
-    this.orderUser.zone = this.userData.zone;
     this.orderUser.latitude = this.coordenatesDef.lat;
     this.orderUser.longitude = this.coordenatesDef.long;
     this.orderUser.userUid = this.uidUser

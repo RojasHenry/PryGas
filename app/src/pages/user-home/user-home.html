@@ -16,24 +16,46 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <ion-grid>
     <ion-row align-items-center>
-        <ion-col col>
-            <ion-item class="la">
-                <ion-card>
-                    <agm-map [latitude]="coordenatesDef.lat" [longitude]="coordenatesDef.long" [zoom]="coordenatesDef.zoom" [zoomControl]="false" [streetViewControl] = "false">
-                      <agm-marker [latitude]="coordenatesDef.lat" [longitude]="coordenatesDef.long"></agm-marker>
-                    </agm-map>
-                    <ion-fab right bottom>
-                        <button ion-fab (click)="getLocation()" >
-                          <ion-icon name="pin"></ion-icon>
-                        </button>
-                      </ion-fab>
-                </ion-card>
-              </ion-item>
-        </ion-col>
-      </ion-row>
+      <ion-col col>
+          <ion-item class="la">
+              <ion-card>
+                  <agm-map [latitude]="coordenatesDef.lat" [longitude]="coordenatesDef.long" [zoom]="coordenatesDef.zoom" [zoomControl]="false" [streetViewControl] = "false">
+                    <agm-marker [latitude]="coordenatesDef.lat" [longitude]="coordenatesDef.long"></agm-marker>
+                  </agm-map>
+                  <ion-fab right bottom>
+                      <button ion-fab (click)="getLocation()" >
+                        <ion-icon name="pin"></ion-icon>
+                      </button>
+                    </ion-fab>
+              </ion-card>
+            </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row align-items-center>
+      <ion-col col>
+        <ion-item class="la">
+          <ion-label class="lab" >Zona:</ion-label>
+          <ion-select [(ngModel)]="orderUser.zone">
+            <ion-option value="Norte">Norte</ion-option>
+            <ion-option value="Centro">Centro</ion-option>
+            <ion-option value="Sur">Sur</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row align-items-center>
+      <ion-col col>
+        <ion-item class="la">
+          <ion-label class="lab" floating >Número de Tanques:</ion-label>
+          <ion-input type="number" [(ngModel)]="orderUser.numberGas"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
     <!--
     <ion-row align-items-center>
       <ion-col col>
@@ -88,7 +110,10 @@
         </ion-col>
       </ion-row> -->
   </ion-grid>
-  <div padding>
-    <button class="btn" ion-button block outline  round (tap)="orderGas()">Solicitar Gas</button>
-    </div>
 </ion-content>
+
+<ion-footer>
+    <div padding>
+      <button class="btn" ion-button block outline  round (tap)="orderGas()">Solicitar Gas</button>
+    </div>
+</ion-footer>

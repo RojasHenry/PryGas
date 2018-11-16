@@ -23,10 +23,13 @@ export class UserProfilePage {
 
   typeUser:any
 
+  userSoc:any
+
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, public afDb : GasFirebaseProvider, public alertCtrl: AlertController) {
     
     this.typeUser = this.navParams.get("typeUser")
+    this.userSoc = this.navParams.get("special")
     
     this.afDb.getSessionUser()
     .then((user)=>{

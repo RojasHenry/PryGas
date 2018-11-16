@@ -31,14 +31,14 @@
           <ion-input type="number" [(ngModel)]="newUser.phone_cell"></ion-input>
         </ion-item>
 
-        <ion-item>
+        <!-- <ion-item>
           <ion-label>Zona:</ion-label>
           <ion-select [(ngModel)]="newUser.zone">
             <ion-option value="Norte">Norte</ion-option>
             <ion-option value="Centro">Centro</ion-option>
             <ion-option value="Sur">Sur</ion-option>
           </ion-select>
-        </ion-item>
+        </ion-item> -->
 
         <ion-item>
           <ion-card>
@@ -54,7 +54,7 @@
         </ion-item>
 
         <ion-item>
-            <button ion-button color="light" round (tap)="completeRegister()">Guardar y continuar</button>
+            <button class="btn" padding-vertical ion-button block outline  round  color="light" round (tap)="completeRegister()">Guardar y continuar</button>
         </ion-item>
       
       </ion-list>

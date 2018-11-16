@@ -37,8 +37,7 @@ export class HomePage {
     latitude: 0,
     longitude: 0,
     phone_cell: null,
-    photo:"",
-    zone:""
+    photo:""
   }
  
   constructor(
@@ -111,6 +110,7 @@ export class HomePage {
         .subscribe((respUser)=>{
           if(respUser.exists){
             localStorage.setItem("type","user");
+            localStorage.setItem("special","userSocial");
             this.navCtrl.setRoot(UserHomePage)
           }else{
             localStorage.setItem("type","userNoRegister");
@@ -138,6 +138,7 @@ export class HomePage {
         .subscribe((respUser)=>{
           if(respUser.exists){
             localStorage.setItem("type","user");
+            localStorage.setItem("special","userSocial");
             this.navCtrl.setRoot(UserHomePage)
           }else{
             localStorage.setItem("type","userNoRegister");

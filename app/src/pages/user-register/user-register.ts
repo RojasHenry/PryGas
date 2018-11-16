@@ -26,8 +26,7 @@ export class UserRegisterPage {
     latitude: 0,
     longitude: 0,
     phone_cell: null,
-    photo:"",
-    zone:""
+    photo:""
   };
   newRegister:newRegister;
 

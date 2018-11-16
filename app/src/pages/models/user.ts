@@ -6,8 +6,7 @@ interface UserModel{
     latitude:number,
     longitude:number,
     phone_cell:number,
-    photo:string,
-    zone:string
+    photo:string
 }
 
 interface DistribuitorModel{
@@ -40,4 +39,5 @@ interface Order{
     longitude:number,
     state:string
     date:string
+    numberGas:number
 }
