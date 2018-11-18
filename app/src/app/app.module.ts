@@ -17,6 +17,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { Facebook } from '@ionic-native/facebook';
 
 import { Diagnostic } from '@ionic-native/diagnostic';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -86,7 +87,8 @@ firebase.initializeApp(firebaseConfig);
     Facebook,
     GasFirebaseProvider,
     Geolocation,
-    Diagnostic
+    Diagnostic,
+    LocationAccuracy
   ]
 })
 export class AppModule {}

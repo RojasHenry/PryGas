@@ -7,5 +7,22 @@ page-home {
 		color:#FFFFFF;
 		text-decoration: underline; 
 	}
+
+	.labD{
+		color: white;
+	}
+
+	.dis.item-md.item-block .item-inner {
+		border-bottom: none !important;
+	}
+	.list-md .item-input:last-child {
+		border-bottom: none;
+	}
+	.list-md > .item-block:last-child .item-inner {
+		border-bottom: 1px solid #dedede !important;
+	}
+	.pregunta{
+		color: white;	
+	}
 	
 }

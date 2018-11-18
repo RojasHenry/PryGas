@@ -19,6 +19,9 @@ import { RegisterPage } from './../register/register';
 })
 export class HomePage {
   //Creacion objeto vacio
+
+  isUser:boolean = true;
+
   loginData = {
     email : "",
     password : ""
@@ -49,6 +52,21 @@ export class HomePage {
     public toastCtrl: ToastController,
     public afAuth: AngularFireAuth) {
     this.menuCtrl.enable(false, "menuGas");
+
+    switch(localStorage.getItem("isUser")){
+      case "true":
+      this.isUser = true;
+      break;
+
+      case "false":
+      this.isUser = false;
+      break;
+
+      default:
+      this.isUser = true;
+      localStorage.setItem("isUser","true");
+      break;
+    }
   }
 
   loginCorreo(){
@@ -158,7 +176,7 @@ export class HomePage {
   loginVerification(loginData){
     let emailNumber:string = loginData.email
     let data:string[] = emailNumber.split("@")
-    if(data.length > 1){
+    if(data.length > 1 && this.isUser){
       if(data[1] == "mail.com" && data[0].match(/^-{0,1}\d+$/)){
         console.log("Usuario no valido")
         return 'Usuario no valido'
@@ -167,7 +185,7 @@ export class HomePage {
         return 'user'
       }
     } else{
-      if(data[0].match(/^-{0,1}\d+$/)){
+      if(data[0].match(/^-{0,1}\d+$/) && !this.isUser){
         if(data[0].length == 10){
           console.log("es distribuidor")
           return 'distribuitor'
@@ -184,8 +202,18 @@ export class HomePage {
         }
       }else{
         console.log("no es numero")
-        return 'Error en data'
+        return 'Usuario invalido'
       }
+    }
+  }
+
+  changeUser(){
+    if(this.isUser){
+      localStorage.setItem("isUser","false");
+      this.isUser = false;
+    }else{
+      localStorage.setItem("isUser","true");
+      this.isUser = true;
     }
   }
 }
