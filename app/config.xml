@@ -92,12 +92,13 @@
         <variable name="APP_ID" value="187907558710352" />
         <variable name="APP_NAME" value="AppGas" />
     </plugin>
-    <plugin name="cordova-plugin-googleplus" spec="^5.3.2">
-        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.800966370931-i0ibeumsfk1bltti65f8jv79tcm565hd" />
-        <variable name="PLAY_SERVICES_VERSION" value="11.8.0" />
-    </plugin>
     <plugin name="cordova.plugins.diagnostic" spec="^4.0.10" />
     <plugin name="cordova-plugin-request-location-accuracy" spec="^2.2.3" />
+    <plugin name="cordova-plugin-firebase" spec="^2.0.5" />
+    <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.2" />
+    <plugin name="cordova-plugin-googleplus" spec="^5.3.2">
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.800966370931-i0ibeumsfk1bltti65f8jv79tcm565hd" />
+    </plugin>
     <engine name="ios" spec="4.5.5" />
     <engine name="android" spec="^7.1.1" />
 </widget>

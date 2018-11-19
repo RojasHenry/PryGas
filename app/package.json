@@ -25,8 +25,10 @@
     "@ionic-native/core": "^4.11.0",
     "@ionic-native/diagnostic": "^4.17.0",
     "@ionic-native/facebook": "^4.15.0",
+    "@ionic-native/firebase": "^4.17.0",
     "@ionic-native/geolocation": "^4.13.0",
-    "@ionic-native/google-plus": "^4.15.0",
+    "@ionic-native/google-plus": "^4.17.0",
+    "@ionic-native/local-notifications": "^4.17.0",
     "@ionic-native/location-accuracy": "^4.17.0",
     "@ionic-native/native-storage": "^4.11.0",
     "@ionic-native/splash-screen": "4.7.0",
@@ -38,12 +40,15 @@
     "cordova-android": "^7.1.1",
     "cordova-browser": "5.0.3",
     "cordova-ios": "4.5.5",
+    "cordova-plugin-badge": "^0.8.7",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-facebook4": "^1.7.4",
+    "cordova-plugin-firebase": "^2.0.5",
     "cordova-plugin-geolocation": "^4.0.1",
     "cordova-plugin-googleplus": "^5.3.2",
     "cordova-plugin-ionic-keyboard": "^2.1.2",
     "cordova-plugin-ionic-webview": "^1.2.1",
+    "cordova-plugin-local-notification": "^0.9.0-beta.2",
     "cordova-plugin-nativestorage": "^2.3.2",
     "cordova-plugin-request-location-accuracy": "^2.2.3",
     "cordova-plugin-splashscreen": "^5.0.2",
@@ -79,12 +84,13 @@
         "APP_ID": "187907558710352",
         "APP_NAME": "AppGas"
       },
-      "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.800966370931-i0ibeumsfk1bltti65f8jv79tcm565hd",
-        "PLAY_SERVICES_VERSION": "11.8.0"
-      },
       "cordova.plugins.diagnostic": {},
-      "cordova-plugin-request-location-accuracy": {}
+      "cordova-plugin-request-location-accuracy": {},
+      "cordova-plugin-firebase": {},
+      "cordova-plugin-local-notification": {},
+      "cordova-plugin-googleplus": {
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.800966370931-i0ibeumsfk1bltti65f8jv79tcm565hd"
+      }
     },
     "platforms": [
       "ios",
