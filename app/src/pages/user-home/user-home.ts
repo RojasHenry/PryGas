@@ -59,6 +59,7 @@ export class UserHomePage {
       this.afDb.getSessionUser()
       .then((user)=>{
         this.uidUser = user.uid
+        afDb.getToken(user.uid)
         this.afDb.getUserDataByUid(user.uid)
         .subscribe((userData:any)=>{
           this.userData = userData;
@@ -178,7 +179,7 @@ export class UserHomePage {
 
       this.coordenatesDef.zoom = 15
     }).catch((error)=>{
-      console.log('Error getting location', error);
+      console.log('Error getting location', JSON.stringify(error));
     })
   }
 

@@ -1,6 +1,6 @@
 import { UserLocationPage } from './../pages/user-location/user-location';
 import { Component, ViewChild } from '@angular/core';
-import { Platform, App, NavController, Nav, Events } from 'ionic-angular';
+import { Platform, App, NavController, Nav, Events, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -9,6 +9,8 @@ import { UserProfilePage } from './../pages/user-profile/user-profile';
 import { DistribuidorPage } from './../pages/distribuidor/distribuidor';
 import { UserHomePage } from './../pages/user-home/user-home';
 import { GasFirebaseProvider } from './../providers/gas-firebase/gas-firebase';
+
+import { LocalNotifications} from '@ionic-native/local-notifications';
 
 @Component({
   templateUrl: 'app.html'
@@ -23,7 +25,7 @@ export class MyApp {
 
   typeUser:any
 
-   constructor( public app: App,  platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afDb: GasFirebaseProvider,public events: Events) {
+   constructor( public app: App,  platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afDb: GasFirebaseProvider,public events: Events,public localNotifications: LocalNotifications,toastCtrl: ToastController) {
     this.afDb.isLogged().then((resp: boolean)=>{
       if(resp){
         this.typeUser = localStorage.getItem("type");
@@ -74,6 +76,36 @@ export class MyApp {
       localStorage.setItem("type","distribuitor");
       this.typeUser = "distribuitor"
     });
+
+    afDb.listenToNotifications().subscribe((msg:Notification) =>{
+      // Schedule a single notification
+      this.localNotifications.schedule({
+        id: 1,
+        text: msg.body,
+        actions: [
+          { id: 'yes', title: 'Yes' },
+          { id: 'no',  title: 'No' }
+        ],
+        foreground: true,
+        priority: 2,
+        vibrate:true,
+        led: 'FF0000',
+        lockscreen:true
+      });
+      console.log(msg)
+      const toast = toastCtrl.create({
+        message: msg.body,
+        duration: 3000
+      });
+      toast.present();
+      this.localNotifications.on("yes").subscribe(()=>{
+        console.log("boton yes")
+      })
+
+      this.localNotifications.on("no").subscribe(()=>{
+        console.log("boton no")
+      })
+    })
   }
 
   gotoProfile(){

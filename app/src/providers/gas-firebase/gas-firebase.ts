@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
-
+import { Platform } from 'ionic-angular';
+import { Firebase } from '@ionic-native/firebase';
 import {GooglePlus} from '@ionic-native/google-plus';
 
 import { first } from 'rxjs/operators';
@@ -15,8 +16,10 @@ import { first } from 'rxjs/operators';
 @Injectable()
 export class GasFirebaseProvider {
 
-  constructor(public afAuth : AngularFireAuth,
+  constructor(public firebaseNative: Firebase,
+              public afAuth : AngularFireAuth,
               public dbGas: AngularFirestore,
+              private platform: Platform,
               public googleplus: GooglePlus) {
     console.log('Hello GasFirebaseProvider Provider');
   }
@@ -109,4 +112,40 @@ export class GasFirebaseProvider {
     let idOrder = btoa(order.date)
     return this.dbGas.collection('orderGas').doc(`${order.zone}`).collection('pedidos').doc(idOrder).set(order)
   }
+
+  /*
+  Metodos para notificaciones  
+  */
+
+  // Get permission from the user
+   // se necesita obtener un token 
+   async getToken(uid:any) { 
+    let token;
+
+    if (this.platform.is('android')) {
+      token = await this.firebaseNative.getToken()
+    } 
+    return this.saveTokenToFirestore(token,uid)
+   }
+
+   // Save the token to firestore
+   // se debe guardar el token como un userid
+   private saveTokenToFirestore(token,uid:any) {
+    if (!token) return;
+
+    const devicesRef = this.dbGas.collection('devices')
+  
+    const docData = { 
+      token: token,
+      userId: uid,
+    }
+  
+    return devicesRef.doc(token).set(docData)
+   }
+ 
+   // Listen to incoming FCM messages
+   // recibe las notificaciones 
+   listenToNotifications() {
+    return this.firebaseNative.onNotificationOpen()
+   }
 }
