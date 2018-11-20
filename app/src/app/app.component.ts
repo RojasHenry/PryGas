@@ -79,6 +79,11 @@ export class MyApp {
 
     afDb.listenToNotifications().subscribe((msg:Notification) =>{
       // Schedule a single notification
+      const toasts = toastCtrl.create({
+        message: msg.body,
+        duration: 3000
+      });
+      toasts.present();
       this.localNotifications.schedule({
         id: 1,
         text: msg.body,
@@ -92,7 +97,7 @@ export class MyApp {
         led: 'FF0000',
         lockscreen:true
       });
-      console.log(msg)
+      console.log(JSON.stringify(msg))
       const toast = toastCtrl.create({
         message: msg.body,
         duration: 3000
