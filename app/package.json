@@ -57,6 +57,7 @@
     "cordova.plugins.diagnostic": "^4.0.10",
     "cordova.plugins.diagnostic.api-22": "^100.0.0-api-22",
     "firebase": "^5.5.8",
+    "firebase-tools": "^6.1.1",
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
     "promise-polyfill": "^8.1.0",
