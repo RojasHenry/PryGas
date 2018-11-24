@@ -34,6 +34,8 @@ export class DistribuidorPage {
     this.afDb.getSessionUser()
     .then((user)=>{
       this.distribuitorUid = user.uid
+          // Get a FCM token
+      afDb.getToken(user.uid)
       this.afDb.getDistribuitorDataByUid(user.uid).subscribe((distribuitorData:any)=>{
         this.distribuitorData = distribuitorData;
         this.events.publish('distribuitor:logged', distribuitorData);

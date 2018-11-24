@@ -137,7 +137,7 @@ export class HomePage {
         })
       });
     }).catch((error) => { 
-      console.log(error) 
+      console.log(JSON.stringify(error)) 
     });
   }
 
@@ -164,7 +164,7 @@ export class HomePage {
           }
         })
       }).catch(ns=>{
-        alert("NOT SUCC")
+        console.log(JSON.stringify(ns))
       })
     })
   }
