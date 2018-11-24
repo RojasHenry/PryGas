@@ -38,6 +38,8 @@
     "@ionic/storage": "2.1.3",
     "angularfire2": "^5.0.0-rc.10",
     "cordova-android": "^7.1.1",
+    "cordova-android-firebase-gradle-release": "^2.0.0",
+    "cordova-android-play-services-gradle-release": "^2.0.0",
     "cordova-browser": "5.0.3",
     "cordova-ios": "4.5.5",
     "cordova-plugin-badge": "^0.8.7",
@@ -66,6 +68,7 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.2.0",
+    "replace-in-file": "^3.4.2",
     "typescript": "~2.6.2"
   },
   "description": "An Ionic project",
@@ -88,8 +91,15 @@
       "cordova-plugin-request-location-accuracy": {},
       "cordova-plugin-firebase": {},
       "cordova-plugin-local-notification": {},
+      "cordova-android-firebase-gradle-release": {
+        "FIREBASE_VERSION": "11.8.0"
+      },
+      "cordova-android-play-services-gradle-release": {
+        "PLAY_SERVICES_VERSION": "11.8.0"
+      },
       "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.800966370931-i0ibeumsfk1bltti65f8jv79tcm565hd"
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.800966370931-i0ibeumsfk1bltti65f8jv79tcm565hd",
+        "PLAY_SERVICES_VERSION": "11.8.0"
       }
     },
     "platforms": [
