@@ -21,12 +21,12 @@
 <ion-content padding>
     <ion-list *ngIf="user">
       <ion-item class="la">
-        <ion-label class="lab"  *ngIf="typeUser == 'user' || typeUser == 'distribuitor'" stacked>Nombre:</ion-label>
-        <ion-label class="lab"  *ngIf="userSoc == 'userSocial'" stacked>Nombre de Usuario:</ion-label>
+        <ion-label class="lab"  *ngIf="(typeUser == 'user' || typeUser == 'distribuitor') && user.lastname" stacked>Nombre:</ion-label>
+        <ion-label class="lab"  *ngIf="!user.lastname" stacked>Nombre de Usuario:</ion-label>
         <ion-input type="text" [(ngModel)]="user.name" [disabled]="(typeUser != 'user') ? true : false" ></ion-input>
       </ion-item>
     
-      <ion-item class="la" *ngIf="!userSoc">
+      <ion-item class="la" *ngIf="user.lastname">
         <ion-label class="lab" stacked>Apellido:</ion-label>
         <ion-input type="text" [(ngModel)]="user.lastname"  [disabled]="(typeUser != 'user') ? true : false"></ion-input>
       </ion-item>
