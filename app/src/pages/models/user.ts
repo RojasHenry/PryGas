@@ -17,7 +17,7 @@ interface DistribuitorModel{
     password:string,
     plaque:string,
     user:string,
-    zone:string,
+    zone:string
 }
 
 interface newRegister{
@@ -39,5 +39,6 @@ interface Order{
     longitude:number,
     state:string
     date:string
-    numberGas:number
+    numberGas:number,
+    reference:string
 }

@@ -3,8 +3,10 @@
       <ion-toolbar>
         <ion-item class="userPerfil">
           <ion-avatar item-start *ngIf="userLogged">
-            <img *ngIf="userLogged.photo != ''" src="userLogged.photo">
-            <img *ngIf="userLogged.photo == ''" src="assets/imgs/user.png">
+            <div *ngIf="userLogged.photo">
+                <img *ngIf="userLogged.photo != ''" src="photo">
+                <img *ngIf="userLogged.photo == ''" src="assets/imgs/user.png">
+            </div>
           </ion-avatar>
           <ion-avatar item-start *ngIf="distribuitorLogged">
             <img src="assets/imgs/user.png">

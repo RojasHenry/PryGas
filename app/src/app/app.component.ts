@@ -26,6 +26,7 @@ export class MyApp {
   typeUser:any
 
   notification:ILocalNotification
+  photo:any;
 
    constructor( public app: App,  platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afDb: GasFirebaseProvider,public events: Events,public localNotifications: LocalNotifications,public toastCtrl: ToastController) {
     this.afDb.isLogged().then((resp: boolean)=>{
@@ -69,6 +70,8 @@ export class MyApp {
 
     events.subscribe('user:logged', (user:UserModel) => {
       this.userLogged = user;
+      this.photo = user.photo;
+      console.log(this.photo)
       localStorage.setItem("type","user");
       this.typeUser = "user"
       this.listenToNofication()

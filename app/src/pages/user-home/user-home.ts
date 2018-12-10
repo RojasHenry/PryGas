@@ -28,9 +28,9 @@ export class UserHomePage {
   alertOrderGas:any
 
   coordenatesDef:Coordenates = {
-    lat:-0.1991789,
-    long:-78.4320597,
-    zoom: 17
+    lat:-0.1795126,
+    long:-78.4802445,
+    zoom: 10
   }
   orderUser:Order = {
     zone:"",
@@ -39,7 +39,8 @@ export class UserHomePage {
     longitude:0,
     state:"",
     userUid: "",
-    numberGas:0
+    numberGas:0,
+    reference:""
   }
 
   constructor(
@@ -94,25 +95,27 @@ export class UserHomePage {
     if(!localStorage.getItem('hasOrder')){
       localStorage.setItem('hasOrder',  btoa(JSON.stringify(this.orderUser)));
     }
-    
+    this.showAlert(this.orderUser)
     this.afDb.registerOrder(this.orderUser)
     .then(()=>{
-      this.showAlert(this.orderUser)
       this.afDb.getOrderActual(this.orderUser).subscribe((orderActual:Order)=>{
         console.log(orderActual)
         if(orderActual){
           if(orderActual.state == "Aceptado"){
             localStorage.removeItem('hasOrder');
             this.alertOrderGas.dismiss()
+            this.cleanUserOrder()
           }
         }
       },(error)=>{
         localStorage.removeItem('hasOrder');
+        this.cleanUserOrder()
         console.log('Error', error);
       })
     })
     .catch((error)=>{
       localStorage.removeItem('hasOrder');
+      this.cleanUserOrder()
       console.log('Error', error);
     })
   }
@@ -130,6 +133,7 @@ export class UserHomePage {
             .then((resp)=>{
               localStorage.removeItem('hasOrder');
               this.alertOrderGas.dismiss();
+              this.cleanUserOrder()
             })
             .catch((error)=>{
               console.log('Error', error);
@@ -219,5 +223,18 @@ export class UserHomePage {
         message: message
       });
       alert.present();
+  }
+
+  cleanUserOrder(){
+    this.orderUser = {
+      zone:"",
+      date:"",
+      latitude:0,
+      longitude:0,
+      state:"",
+      userUid: "",
+      numberGas:0,
+      reference:""
+    }
   }
 }
