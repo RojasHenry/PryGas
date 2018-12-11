@@ -1,7 +1,17 @@
 page-order-details {
     agm-map {
-        height: 250px;
-      }
+        height: 180px;
+    }
+
+    .map.card-md {
+        margin: 0px !important;
+        width: 100%
+    }
+    .tqs.fab, .tqs.fab-md{
+        border-radius: 2px;
+        width: 100%;
+        height: 30px;
+    }
 }
 
 

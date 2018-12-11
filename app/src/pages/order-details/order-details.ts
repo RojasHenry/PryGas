@@ -20,8 +20,10 @@ export class OrderDetailsPage {
   orderDetail:any
   userOrder:UserModel
   zone:any
+  zoom:any
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams,public afDb : GasFirebaseProvider) {
 
+    this.zoom = 18;
     this.distriUid = this.navParams.get("uidDist");
     this.orderDetail = this.navParams.get("order");
     this.zone = this.navParams.get("zone");

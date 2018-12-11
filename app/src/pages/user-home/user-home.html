@@ -19,26 +19,33 @@
 <ion-content>
   <ion-grid>
     <ion-row align-items-center>
-      <ion-col col>
-          <ion-item class="la">
-              <ion-card>
-                  <agm-map [latitude]="coordenatesDef.lat" [longitude]="coordenatesDef.long" [zoom]="coordenatesDef.zoom" [zoomControl]="false" [streetViewControl] = "false">
-                    <agm-marker [latitude]="coordenatesDef.lat" [longitude]="coordenatesDef.long"></agm-marker>
-                  </agm-map>
-                  <ion-fab right bottom>
-                      <button ion-fab (click)="getActualLocation()" >
-                        <ion-icon name="pin"></ion-icon>
-                      </button>
-                    </ion-fab>
-              </ion-card>
+        <ion-col col>
+            <ion-item class="la">
+              <ion-label class="lab" text-center>Formulario de Pedido:</ion-label>
             </ion-item>
+        </ion-col>
+      </ion-row>
+    <ion-row align-items-center>
+      <ion-col col>
+          <ion-item class="la map">
+            <ion-card>
+                <agm-map [latitude]="coordenatesDef.lat" [longitude]="coordenatesDef.long" [zoom]="coordenatesDef.zoom" [zoomControl]="false" [streetViewControl] = "false" [clickableIcons]="false" [mapDraggable]="false"> 
+                  <agm-marker [latitude]="coordenatesDef.lat" [longitude]="coordenatesDef.long"></agm-marker>
+                </agm-map>
+                <ion-fab right bottom>
+                    <button ion-fab (click)="getActualLocation()" >
+                      <ion-icon name="pin"></ion-icon>
+                    </button>
+                  </ion-fab>
+            </ion-card>
+          </ion-item>
       </ion-col>
     </ion-row>
 
     <ion-row align-items-center>
       <ion-col col>
         <ion-item class="la">
-          <ion-label class="lab" >Zona:</ion-label>
+          <ion-label class="lab" >Sector:</ion-label>
           <ion-select [(ngModel)]="orderUser.zone">
             <ion-option value="Norte">Norte</ion-option>
             <ion-option value="Centro">Centro</ion-option>
@@ -53,6 +60,15 @@
         <ion-item class="la">
           <ion-label class="lab" floating >Número de Tanques:</ion-label>
           <ion-input type="number" [(ngModel)]="orderUser.numberGas"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row align-items-center>
+      <ion-col col>
+        <ion-item class="la">
+          <ion-label class="lab" stacked>Referencia:</ion-label>
+          <ion-textarea type="text" maxlength="100" rows="3" placeholder="Referencia de dónde vive como número de casa, color, teléfono, dirección, etc. Para ubicarlo de mejor manera." [(ngModel)]="orderUser.reference"></ion-textarea>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -114,6 +130,6 @@
 
 <ion-footer>
     <div padding>
-      <button class="btn" ion-button block outline  round (tap)="orderGas()">Solicitar Gas</button>
+      <button class="btn" ion-button block outline  round (tap)="orderGas()" [disabled]="orderUser.numberGas == 0 || orderUser.zone =='' || orderUser.reference == '' ">Solicitar Gas</button>
     </div>
 </ion-footer>

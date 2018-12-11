@@ -11,49 +11,58 @@ admin.initializeApp();
 //  response.send("Hello from Firebase!");
 // });
 
-exports.orderIsAccepted = functions.firestore
+// funciones de pedidos al norte
+exports.orderIsAcceptedNorth = functions.firestore
     .document('orderGas/Norte/pedidos/{pedidoID}')
     .onUpdate(async event =>{
         const dataOrderbefore = event.before.data();
         const dataOrderAfter = event.after.data();
 
-        const db = admin.firestore()
+        console.log(JSON.stringify(dataOrderbefore))
+        console.log(JSON.stringify(dataOrderAfter))
 
-        const distriRef = db.collection('users')
+        if(dataOrderAfter.state == "Aceptado"){
+            const db = admin.firestore()
 
-        const distri = await distriRef.get();
+            const distriRef = db.collection('distributor')
 
-        var distriname = ""
+            const distri = await distriRef.get();
 
-        distri.forEach(result =>{
-            if(result.id == dataOrderAfter.acceptedBy){
-                distriname += (result.data().lastname != "")? result.data().name+" "+result.data().lastname : result.data().name
+            var distriname = ""
+
+            distri.forEach(result =>{
+                if(result.id == dataOrderAfter.acceptedBy){
+                    distriname += result.data().name+" "+result.data().lastname
+                }
+            })
+
+            // Notification content
+            const payload = {
+                notification: {
+                    title: `Solicitud Aceptada`,
+                    body: `Su solicitud de entrega de cilindro fue aceptado por ${distriname}`,
+                    icon: 'https://goo.gl/Fz9nrQ'
+                }
             }
-        })
 
-        // Notification content
-        const payload = {
-            notification: {
-                title: `Pedido Aceptado`,
-                body: `Tu pedido fue aceptado por ${distriname}`,
-                icon: 'https://goo.gl/Fz9nrQ'
-            }
+            const devicesRef = db.collection('devices').where("userId","==",dataOrderAfter.userUid)
+
+            const devices = await devicesRef.get();
+
+            const tokens = [];
+
+            // send a notification to each device token
+            devices.forEach(result => {
+                const token = result.data().token;
+                tokens.push(token)
+            })
+
+            return admin.messaging().sendToDevice(tokens, payload)
+        }else{
+            console.log(JSON.stringify({userState: dataOrderAfter.state }))
+            return null
         }
-
-        const devicesRef = db.collection('devices').where("","==",dataOrderAfter.userUid)
-
-        const devices = await devicesRef.get();
-
-        const tokens = [];
-
-        // send a notification to each device token
-        devices.forEach(result => {
-            const token = result.data().token;
-            tokens.push(token)
-        })
-
-        return admin.messaging().sendToDevice(tokens, payload)
-    })
+})
 
 exports.newOrderGasNorth = functions.firestore
     .document('orderGas/Norte/pedidos/{pedidoID}')
@@ -109,3 +118,223 @@ exports.newOrderGasNorth = functions.firestore
 
         return admin.messaging().sendToDevice(tokens, payload)
 });
+
+
+// funciones de pedidos al sur
+exports.orderIsAcceptedSouth = functions.firestore
+    .document('orderGas/Sur/pedidos/{pedidoID}')
+    .onUpdate(async event =>{
+        const dataOrderbefore = event.before.data();
+        const dataOrderAfter = event.after.data();
+
+        console.log(JSON.stringify(dataOrderbefore))
+        console.log(JSON.stringify(dataOrderAfter))
+
+        if(dataOrderAfter.state == "Aceptado"){
+            const db = admin.firestore()
+
+            const distriRef = db.collection('distributor')
+
+            const distri = await distriRef.get();
+
+            var distriname = ""
+
+            distri.forEach(result =>{
+                if(result.id == dataOrderAfter.acceptedBy){
+                    distriname += result.data().name+" "+result.data().lastname
+                }
+            })
+
+            // Notification content
+            const payload = {
+                notification: {
+                    title: `Solicitud Aceptada`,
+                    body: `Su solicitud de entrega de cilindro fue aceptado por ${distriname}`,
+                    icon: 'https://goo.gl/Fz9nrQ'
+                }
+            }
+
+            const devicesRef = db.collection('devices').where("userId","==",dataOrderAfter.userUid)
+
+            const devices = await devicesRef.get();
+
+            const tokens = [];
+
+            // send a notification to each device token
+            devices.forEach(result => {
+                const token = result.data().token;
+                tokens.push(token)
+            })
+
+            return admin.messaging().sendToDevice(tokens, payload)
+        }else{
+            console.log(JSON.stringify({userState: dataOrderAfter.state }))
+            return null
+        }
+})
+
+exports.newOrderGasSouth = functions.firestore
+    .document('orderGas/Sur/pedidos/{pedidoID}')
+    .onCreate(async event =>{
+        const dataOrder = event.data();
+        console.log(JSON.stringify(dataOrder))
+
+        // ref to the device collection for the user
+        const db = admin.firestore()
+        //db.settings({ timestampsInSnapshots: true })
+
+        const userRef = db.collection('users')
+
+        const user = await userRef.get();
+
+        var username = ""
+
+        user.forEach(result =>{
+            if(result.id == dataOrder.userUid){
+                username += (result.data().lastname != "")? result.data().name+" "+result.data().lastname : result.data().name
+            }
+        })
+
+        console.log(username)
+        // Notification content
+        const payload = {
+            notification: {
+                title: `Nuevo Pedido de Gas en Sector ${dataOrder.zone}`,
+                body: `Tienes un nuevo Pedido de ${username}`,
+                icon: 'https://goo.gl/Fz9nrQ'
+            }
+        }
+
+        
+        const distribuitorRef = db.collection('distributor').where('zone', "==",dataOrder.zone)
+
+        const devicesRef = db.collection('devices')
+
+        const devices = await devicesRef.get();
+        const distribuitor = await distribuitorRef.get();
+
+        const tokens = [];
+
+        // send a notification to each device token
+        distribuitor.forEach(distr => {
+            devices.forEach(dev =>{
+                if(distr.id == dev.data().userId){
+                    const token = dev.data().token;
+                    tokens.push(token)
+                }
+            })
+        })
+
+        return admin.messaging().sendToDevice(tokens, payload)
+});
+
+
+// funciones de pedidos al centro
+exports.orderIsAcceptedCenter = functions.firestore
+    .document('orderGas/Centro/pedidos/{pedidoID}')
+    .onUpdate(async event =>{
+        const dataOrderbefore = event.before.data();
+        const dataOrderAfter = event.after.data();
+
+        console.log(JSON.stringify(dataOrderbefore))
+        console.log(JSON.stringify(dataOrderAfter))
+
+        if(dataOrderAfter.state == "Aceptado"){
+            const db = admin.firestore()
+
+            const distriRef = db.collection('distributor')
+
+            const distri = await distriRef.get();
+
+            var distriname = ""
+
+            distri.forEach(result =>{
+                if(result.id == dataOrderAfter.acceptedBy){
+                    distriname += result.data().name+" "+result.data().lastname
+                }
+            })
+
+            // Notification content
+            const payload = {
+                notification: {
+                    title: `Solicitud Aceptada`,
+                    body: `Su solicitud de entrega de cilindro fue aceptado por ${distriname}`,
+                    icon: 'https://goo.gl/Fz9nrQ'
+                }
+            }
+
+            const devicesRef = db.collection('devices').where("userId","==",dataOrderAfter.userUid)
+
+            const devices = await devicesRef.get();
+
+            const tokens = [];
+
+            // send a notification to each device token
+            devices.forEach(result => {
+                const token = result.data().token;
+                tokens.push(token)
+            })
+
+            return admin.messaging().sendToDevice(tokens, payload)
+        }else{
+            console.log(JSON.stringify({userState: dataOrderAfter.state }))
+            return null
+        }
+})
+
+exports.newOrderGasCenter = functions.firestore
+    .document('orderGas/Centro/pedidos/{pedidoID}')
+    .onCreate(async event =>{
+        const dataOrder = event.data();
+        console.log(JSON.stringify(dataOrder))
+
+        // ref to the device collection for the user
+        const db = admin.firestore()
+        //db.settings({ timestampsInSnapshots: true })
+
+        const userRef = db.collection('users')
+
+        const user = await userRef.get();
+
+        var username = ""
+
+        user.forEach(result =>{
+            if(result.id == dataOrder.userUid){
+                username += (result.data().lastname != "")? result.data().name+" "+result.data().lastname : result.data().name
+            }
+        })
+
+        console.log(username)
+        // Notification content
+        const payload = {
+            notification: {
+                title: `Nuevo Pedido de Gas en Sector ${dataOrder.zone}`,
+                body: `Tienes un nuevo Pedido de ${username}`,
+                icon: 'https://goo.gl/Fz9nrQ'
+            }
+        }
+
+        
+        const distribuitorRef = db.collection('distributor').where('zone', "==",dataOrder.zone)
+
+        const devicesRef = db.collection('devices')
+
+        const devices = await devicesRef.get();
+        const distribuitor = await distribuitorRef.get();
+
+        const tokens = [];
+
+        // send a notification to each device token
+        distribuitor.forEach(distr => {
+            devices.forEach(dev =>{
+                if(distr.id == dev.data().userId){
+                    const token = dev.data().token;
+                    tokens.push(token)
+                }
+            })
+        })
+
+        return admin.messaging().sendToDevice(tokens, payload)
+});
+
+

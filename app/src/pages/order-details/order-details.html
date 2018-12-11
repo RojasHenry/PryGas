@@ -9,10 +9,15 @@
   <ion-grid no-padding>
     <ion-row align-items-center>
       <ion-col col>
-        <ion-card>
-            <agm-map [latitude]="orderDetail.latitude" [longitude]="orderDetail.longitude" [zoom]="15" [zoomControl]="false" [streetViewControl] = "false">
+        <ion-card class="map">
+            <agm-map [latitude]="orderDetail.latitude" [longitude]="orderDetail.longitude" [zoom]="zoom" [zoomControl]="false" [streetViewControl] = "false" [clickableIcons]="false" [mapDraggable]="false">
               <agm-marker [latitude]="orderDetail.latitude" [longitude]="orderDetail.longitude"></agm-marker>
             </agm-map>
+            <ion-fab right top>
+                <button ion-fab class="tqs">
+                    {{orderDetail.numberGas}} tanques
+                </button>
+              </ion-fab>
         </ion-card>
       </ion-col>
     </ion-row>
@@ -34,9 +39,18 @@
         </ion-card>
       </ion-col>
     </ion-row>
+    <ion-row *ngIf="userOrder">
+        <ion-col col>
+          <ion-card>
+            <ion-card-content text-justify>
+             Referencia: {{orderDetail.reference}}
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
     <ion-row align-items-end>
         <ion-col offset-6 col-3>
-          <button i ion-button  class="btn" block outline (click)="ignoreOrder()" >Ignorar</button>
+          <button ion-button  class="btn" block outline (click)="ignoreOrder()" >Ignorar</button>
         </ion-col>
         <ion-col col-3>
           <button  ion-button  class="btn" block outline (click)="acceptOrder(orderDetail)" >Aceptar</button>

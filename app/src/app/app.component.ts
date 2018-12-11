@@ -10,7 +10,7 @@ import { DistribuidorPage } from './../pages/distribuidor/distribuidor';
 import { UserHomePage } from './../pages/user-home/user-home';
 import { GasFirebaseProvider } from './../providers/gas-firebase/gas-firebase';
 
-import { LocalNotifications} from '@ionic-native/local-notifications';
+import { LocalNotifications, ILocalNotification} from '@ionic-native/local-notifications';
 
 @Component({
   templateUrl: 'app.html'
@@ -25,7 +25,10 @@ export class MyApp {
 
   typeUser:any
 
-   constructor( public app: App,  platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afDb: GasFirebaseProvider,public events: Events,public localNotifications: LocalNotifications,toastCtrl: ToastController) {
+  notification:ILocalNotification
+  photo:any;
+
+   constructor( public app: App,  platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public afDb: GasFirebaseProvider,public events: Events,public localNotifications: LocalNotifications,public toastCtrl: ToastController) {
     this.afDb.isLogged().then((resp: boolean)=>{
       if(resp){
         this.typeUser = localStorage.getItem("type");
@@ -67,38 +70,69 @@ export class MyApp {
 
     events.subscribe('user:logged', (user:UserModel) => {
       this.userLogged = user;
+      this.photo = user.photo;
+      console.log(this.photo)
       localStorage.setItem("type","user");
       this.typeUser = "user"
+      this.listenToNofication()
     });
 
     events.subscribe('distribuitor:logged', (distribuitor:DistribuitorModel) => {
       this.distribuitorLogged = distribuitor;
       localStorage.setItem("type","distribuitor");
       this.typeUser = "distribuitor"
+      this.listenToNofication()
     });
 
-    afDb.listenToNotifications().subscribe((msg:Notification) =>{
+    
+  }
+
+  listenToNofication(){
+    this.afDb.listenToNotifications().subscribe((msg:Notification) =>{
       // Schedule a single notification
-      const toasts = toastCtrl.create({
-        message: msg.body,
+      const toasts = this.toastCtrl.create({
+        message: JSON.stringify(msg),
         duration: 3000
       });
       toasts.present();
-      this.localNotifications.schedule({
-        id: 1,
-        text: msg.body,
-        actions: [
-          { id: 'yes', title: 'Yes' },
-          { id: 'no',  title: 'No' }
-        ],
-        foreground: true,
-        priority: 2,
-        vibrate:true,
-        led: 'FF0000',
-        lockscreen:true
-      });
+
+      switch(this.typeUser){
+        case "user":
+          this.notification = {
+            id: 1,
+            
+            title: msg.title,
+            text: msg.body,
+            foreground: true,
+            priority: 2,
+            vibrate:true,
+            led: 'FF0000',
+            lockscreen:true
+          }
+        break;
+
+        case "distribuitor":
+          this.notification = {
+            id: 1,
+            title: msg.title,
+            text: msg.body,
+            foreground: true,
+            priority: 2,
+            vibrate:true,
+            actions: [
+              {id: "yes",title: "Aceptar"},
+              {id: "no", title: "Ignorar"}],
+            led: 'FF0000',
+            lockscreen:true
+          }
+        break;
+
+        default:
+        break;
+      }
+      this.localNotifications.schedule(this.notification);
       console.log(JSON.stringify(msg))
-      const toast = toastCtrl.create({
+      const toast = this.toastCtrl.create({
         message: msg.body,
         duration: 3000
       });
@@ -112,7 +146,6 @@ export class MyApp {
       })
     })
   }
-
   gotoProfile(){
     this.nav.setRoot(UserProfilePage,{typeUser:this.typeUser})
   }
