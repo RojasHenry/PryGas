@@ -83,9 +83,6 @@
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-nativestorage": {},
-      "cordova-plugin-geolocation": {
-        "GEOLOCATION_USAGE_DESCRIPTION": "To locate you"
-      },
       "cordova-plugin-facebook4": {
         "APP_ID": "187907558710352",
         "APP_NAME": "AppGas"
@@ -103,7 +100,8 @@
       "cordova-plugin-googleplus": {
         "REVERSED_CLIENT_ID": "com.googleusercontent.apps.800966370931-i0ibeumsfk1bltti65f8jv79tcm565hd",
         "PLAY_SERVICES_VERSION": "11.8.0"
-      }
+      },
+      "cordova-plugin-geolocation": {}
     },
     "platforms": [
       "ios",
