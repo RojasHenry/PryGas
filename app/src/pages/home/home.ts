@@ -208,11 +208,20 @@ export class HomePage {
   changeUser(){
     if(this.isUser){
       localStorage.setItem("isUser","false");
+      this.clearUserLogin();
       this.isUser = false;
     }else{
       localStorage.setItem("isUser","true");
+      this.clearUserLogin();
       this.isUser = true;
     }
+  }
+
+  clearUserLogin(){
+    this.loginData = {
+      email : "",
+      password : ""
+    };
   }
 }
 

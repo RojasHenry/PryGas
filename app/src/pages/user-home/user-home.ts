@@ -39,7 +39,7 @@ export class UserHomePage {
     longitude:0,
     state:"",
     userUid: "",
-    numberGas:0,
+    numberGas:null,
     reference:""
   }
 

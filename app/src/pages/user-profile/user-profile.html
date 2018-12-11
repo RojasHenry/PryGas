@@ -52,7 +52,9 @@
 
     </ion-list>
 
-    <div padding *ngIf="typeUser == 'user'" >
-      <button class="btn" ion-button block outline [disabled]="!enable" (click)="saveDataUser(user)">Actualizar Perfil</button>
+    <div padding *ngIf="typeUser == 'user' && user" >
+      <button *ngIf="!user.lastname" class="btn" ion-button block outline [disabled]="!enable || !user.name|| !user.phone_cell" (click)="saveDataUser(user)">Actualizar Perfil</button>
+      <button *ngIf="user.lastname" class="btn" ion-button block outline [disabled]="!enable || !user.name || !user.lastname || !user.phone_cell" (click)="saveDataUser(user)">Actualizar Perfil Usuario</button>
     </div>
+
 </ion-content>
