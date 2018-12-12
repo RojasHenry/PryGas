@@ -120,7 +120,7 @@ export class GasFirebaseProvider {
   // Get permission from the user
    // se necesita obtener un token 
    async getToken(uid:any) { 
-    let token;
+    let token
 
     if (this.platform.is('android')) {
       token = await this.firebaseNative.getToken()
@@ -133,6 +133,7 @@ export class GasFirebaseProvider {
    private saveTokenToFirestore(token,uid:any) {
     if (!token) return;
 
+    localStorage.setItem("token",token);
     const devicesRef = this.dbGas.collection('devices')
   
     const docData = { 
@@ -147,5 +148,9 @@ export class GasFirebaseProvider {
    // recibe las notificaciones 
    listenToNotifications() {
     return this.firebaseNative.onNotificationOpen()
+   }
+
+   deleteTokenSesion(){
+     return this.dbGas.collection('devices').doc(localStorage.getItem("token")).delete()
    }
 }
