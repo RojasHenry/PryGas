@@ -90,17 +90,16 @@ export class MyApp {
   listenToNofication(){
     this.afDb.listenToNotifications().subscribe((msg:Notification) =>{
       // Schedule a single notification
-      const toasts = this.toastCtrl.create({
+      /*const toasts = this.toastCtrl.create({
         message: JSON.stringify(msg),
         duration: 3000
       });
-      toasts.present();
+      toasts.present();*/
 
       switch(this.typeUser){
         case "user":
           this.notification = {
             id: 1,
-            
             title: msg.title,
             text: msg.body,
             foreground: true,
@@ -164,11 +163,17 @@ export class MyApp {
   
   async signOut(){
     localStorage.setItem("type","");
-    await this.afDb.signOut().then((resp)=>{
-      this.userLogged = null;
-      this.distribuitorLogged = null;
-      this.nav.setRoot(HomePage);
-    })
+    await this.afDb.deleteTokenSesion()
+      .then(async ()=>{
+        await this.afDb.signOut().then((resp)=>{
+          this.userLogged = null;
+          this.distribuitorLogged = null;
+          this.nav.setRoot(HomePage);
+        })
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
     .catch((error)=>{
       console.log(error);
     })
