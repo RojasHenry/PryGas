@@ -2,7 +2,9 @@ import { UserHomePage } from './../user-home/user-home';
 import { GasFirebaseProvider } from './../../providers/gas-firebase/gas-firebase';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController, AlertController, ToastController } from 'ionic-angular';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
+import { Diagnostic } from '@ionic-native/diagnostic';
 
 /**
  * Generated class for the UserRegisterPage page.
@@ -39,7 +41,14 @@ export class UserRegisterPage {
   typeRegist:any
   uidSocial:any
 
-  constructor(public menuCtrl: MenuController, public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams,public gasFirebase:GasFirebaseProvider, public geolocation:Geolocation) {
+  constructor(public menuCtrl: MenuController, 
+    public alertCtrl: AlertController, 
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    private locationAccuracy: LocationAccuracy,
+    private diagnostic: Diagnostic,
+    public toastCtrl:ToastController,
+    public gasFirebase:GasFirebaseProvider, public geolocation:Geolocation) {
     this.menuCtrl.enable(false, "menuGas");
     this.typeRegist = this.navParams.get('typeRegis');
 
@@ -51,8 +60,7 @@ export class UserRegisterPage {
       this.newUser = this.navParams.get('userData')
       this.uidSocial = this.navParams.get('uidSocial')
     }
-    
-    this.getLocation();
+    this.getActualLocation();
   }
 
   ionViewDidLoad() {
@@ -60,53 +68,111 @@ export class UserRegisterPage {
   }
 
   completeRegister(){
-    console.log(this.newUser);
-    if(this.typeRegist == "newuser"){
-      this.gasFirebase.createNewUser(this.newRegister).then(auth => {
-        this.gasFirebase.registerUser(this.newUser,auth.user.uid).then((resp)=>{
+    if(this.newUser.phone_cell.toString().length == 7 || this.newUser.phone_cell.toString().length == 10){
+      if(this.typeRegist == "newuser"){
+        this.gasFirebase.createNewUser(this.newRegister).then(auth => {
+          this.gasFirebase.registerUser(this.newUser,auth.user.uid).then((resp)=>{
+            console.log(resp)
+            this.navCtrl.setRoot(UserHomePage)
+          }).catch((error)=>{
+            console.log(error)
+          })
+        }).catch(err => {
+          // Handle error
+          let alert = this.alertCtrl.create({
+            title: 'Error',
+            message: err.message,
+            buttons: ['OK']
+          });
+          alert.present();
+        });
+      }else{
+        this.gasFirebase.registerUser(this.newUser,this.uidSocial).then((resp)=>{
           console.log(resp)
           this.navCtrl.setRoot(UserHomePage)
         }).catch((error)=>{
           console.log(error)
+          // Handle error
+          let alert = this.alertCtrl.create({
+            title: 'Error',
+            message: error.message,
+            buttons: ['OK']
+          });
+          alert.present();
         })
-      }).catch(err => {
-        // Handle error
-        let alert = this.alertCtrl.create({
-          title: 'Error',
-          message: err.message,
-          buttons: ['OK']
-        });
-        alert.present();
-      });
+      }
     }else{
-      this.gasFirebase.registerUser(this.newUser,this.uidSocial).then((resp)=>{
-        console.log(resp)
-        this.navCtrl.setRoot(UserHomePage)
-      }).catch((error)=>{
-        console.log(error)
-        // Handle error
-        let alert = this.alertCtrl.create({
-          title: 'Error',
-          message: error.message,
-          buttons: ['OK']
-        });
-        alert.present();
-      })
+      this.showToast("Número de teléfono incorrecto.");
     }
+   
   }
 
   getLocation(){
-    this.geolocation.getCurrentPosition().then((resp)=>{
-      this.newUser.latitude = resp.coords.latitude;
-      this.newUser.longitude = resp.coords.longitude;
+    this.diagnostic.isGpsLocationEnabled()
+      .then((enabled)=>{
+        if(enabled){
+          this.geolocation.getCurrentPosition().then((resp)=>{
+            this.newUser.latitude = resp.coords.latitude;
+            this.newUser.longitude = resp.coords.longitude;
+      
+            this.coordenatesDef.lat = resp.coords.latitude;
+            this.coordenatesDef.long = resp.coords.longitude;
+      
+            this.coordenatesDef.zoom = 15
+          }).catch((error)=>{
+            console.log('Error getting location', error);
+          })
+        }else{
+          this.presentConfirm("Encender GPS por favor");       
+        }
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+  }
 
-      this.coordenatesDef.lat = resp.coords.latitude;
-      this.coordenatesDef.long = resp.coords.longitude;
+  getActualLocation(){
+    this.diagnostic.isGpsLocationEnabled()
+      .then((enabled)=>{
+        if(enabled){
+          this.getLocation();
+        }else{
+          this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+            if(canRequest) {
+              this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+                () =>{
+                  this.getLocation();
+                },
+                (error) => {
+                  this.presentConfirm("Encender GPS por favor");
+                  console.log('Error requesting location permissions', error)
+                }
+              );
+            }else{
+              this.presentConfirm("Encender GPS por favor");
+            }
+          });
+        }
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+  }
 
-      this.coordenatesDef.zoom = 15
-    }).catch((error)=>{
-      console.log('Error getting location', error);
-    })
+  presentConfirm(message) {
+    let alert = this.alertCtrl.create({
+      title: 'Ubicación',
+      message: message
+    });
+    alert.present();
+  }
+
+  showToast(msg){
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
   }
 
 }

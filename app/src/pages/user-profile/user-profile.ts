@@ -1,6 +1,6 @@
 import { GasFirebaseProvider } from './../../providers/gas-firebase/gas-firebase';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, AlertOptions } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, AlertOptions, ToastController } from 'ionic-angular';
 
 /**
  * Generated class for the UserProfilePage page.
@@ -24,7 +24,7 @@ export class UserProfilePage {
   typeUser:any
 
   constructor(public navCtrl: NavController, 
-    public navParams: NavParams, public afDb : GasFirebaseProvider, public alertCtrl: AlertController) {
+    public navParams: NavParams, public afDb : GasFirebaseProvider, public toastCtrl: ToastController,public alertCtrl: AlertController) {
     
     this.typeUser = this.navParams.get("typeUser")
     
@@ -58,24 +58,28 @@ export class UserProfilePage {
   saveDataUser(user:any){
     this.enable = false
     console.log(user)
-    if(this.typeUser == "user"){
-      this.afDb.updateUser(user,this.uidUser)
-      .then((resp)=>{
-        this.showAlert()
-      })
-      .catch((error)=>{
-        console.log(error);
-      })
+
+    if(this.user.phone_cell.toString().length == 7 || this.user.phone_cell.toString().length == 10){
+      if(this.typeUser == "user"){
+        this.afDb.updateUser(user,this.uidUser)
+        .then((resp)=>{
+          this.showAlert()
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
+      }else{
+        this.afDb.updateDistribuitorData(user,this.uidUser)
+        .then((resp)=>{
+          this.showAlert()
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
+      }
     }else{
-      this.afDb.updateDistribuitorData(user,this.uidUser)
-      .then((resp)=>{
-        this.showAlert()
-      })
-      .catch((error)=>{
-        console.log(error);
-      })
+      this.showToast("Número de teléfono incorrecto.");
     }
-    
   }
 
   showAlert() {
@@ -107,6 +111,13 @@ export class UserProfilePage {
     }
     const alert = this.alertCtrl.create(optionAlert);
     alert.present();
+  }
+  showToast(msg){
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
   }
 
 }

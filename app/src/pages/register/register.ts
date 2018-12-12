@@ -1,7 +1,7 @@
 import { UserRegisterPage } from './../user-register/user-register';
 import { GasFirebaseProvider } from './../../providers/gas-firebase/gas-firebase';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 //import firebase from 'firebase';
 
@@ -30,21 +30,30 @@ export class RegisterPage {
     public gasProvider: GasFirebaseProvider,  
     public navCtrl: NavController, 
     public navParams: NavParams, 
-    public alertCtrl: AlertController) {
+    public toastCtrl: ToastController) {
     //this.signupData.email = this.navParams.get('email');
   }
   
   registro() {
-    if(this.signupData.password !== this.signupData.passwordRetyped) {
-      let alert = this.alertCtrl.create({
-        title: 'Error',
-        message: 'Your password and your re-entered password does not match each other.',
-        buttons: ['OK']
-      });
-      alert.present();
+
+    if(!this.signupData.email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+      this.showToast("Email incorrecto.");
       return;
-    }else{
-      this.navCtrl.setRoot(UserRegisterPage,{newRegister: this.signupData, typeRegis:"newuser"});
     }
+
+    if(this.signupData.password !== this.signupData.passwordRetyped) {
+      this.showToast("Contraseñas no coinciden.")
+      return;
+    }
+    
+    this.navCtrl.setRoot(UserRegisterPage,{newRegister: this.signupData, typeRegis:"newuser"});
+  }
+
+  showToast(msg){
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
   }
 }
