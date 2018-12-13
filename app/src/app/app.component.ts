@@ -88,7 +88,8 @@ export class MyApp {
   }
 
   listenToNofication(){
-    this.afDb.listenToNotifications().subscribe((msg:Notification) =>{
+    //this.afDb.listenToNotifications().subscribe((msg:Notification) =>{
+    this.afDb.listenToNotifications().subscribe((msg:any) =>{
       // Schedule a single notification
       /*const toasts = this.toastCtrl.create({
         message: JSON.stringify(msg),
@@ -137,11 +138,12 @@ export class MyApp {
       });
       toast.present();
       this.localNotifications.on("yes").subscribe(()=>{
-        console.log("boton yes")
+        this.afDb.updateByNotification(msg.id,msg.zona)
       })
 
       this.localNotifications.on("no").subscribe(()=>{
         console.log("boton no")
+        this.localNotifications.clear(1);
       })
     })
   }

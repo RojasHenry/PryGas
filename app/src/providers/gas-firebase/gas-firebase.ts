@@ -6,7 +6,6 @@ import { Firebase } from '@ionic-native/firebase';
 import {GooglePlus} from '@ionic-native/google-plus';
 
 import { first } from 'rxjs/operators';
-
 /*
   Generated class for the GasFirebaseProvider provider.
 
@@ -152,5 +151,16 @@ export class GasFirebaseProvider {
 
    deleteTokenSesion(){
      return this.dbGas.collection('devices').doc(localStorage.getItem("token")).delete()
+   }
+
+   updateByNotification(id:string,zone:any){
+     this.dbGas.collection('orderGas').doc(zone).collection('pedidos').doc(id).valueChanges()
+     .subscribe((resp:Order)=>{
+       resp.state = "Aceptado"
+       this.dbGas.collection('orderGas').doc(zone).collection('pedidos').doc(btoa(resp.date)).update(resp);
+     },
+     (error)=>{
+       console.error(JSON.stringify(error))
+     })
    }
 }

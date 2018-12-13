@@ -93,10 +93,14 @@ exports.newOrderGasNorth = functions.firestore
                 title: `Nuevo Pedido de Gas en Sector ${dataOrder.zone}`,
                 body: `Tienes un nuevo Pedido de ${username}`,
                 icon: 'https://goo.gl/Fz9nrQ'
+            },
+            data:{
+                id: event.id,
+                zona: "Norte"
             }
         }
 
-        
+        console.log(payload)
         const distribuitorRef = db.collection('distributor').where('zone', "==",dataOrder.zone)
 
         const devicesRef = db.collection('devices')
