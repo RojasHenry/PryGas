@@ -24,6 +24,14 @@ export class DistribuidorPage {
   distribuitorData:DistribuitorModel;
 
   ordersUsers:any
+  ordersAcepted:any
+
+  accepted:boolean = false;
+  solicitud:boolean = true;
+
+  iconSoli:string = "ios-arrow-down"
+
+  iconAccep:string = "ios-arrow-up"
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -38,7 +46,7 @@ export class DistribuidorPage {
       afDb.getToken(user.uid)
       this.afDb.getDistribuitorDataByUid(user.uid).subscribe((distribuitorData:any)=>{
         this.distribuitorData = distribuitorData;
-        this.events.publish('distribuitor:logged', distribuitorData);
+        this.events.publish('distribuitor:logged', distribuitorData, this.distribuitorUid);
         console.log(this.distribuitorData)
         this.getOrders(this.distribuitorData.zone)
       },(error)=>{
@@ -63,7 +71,27 @@ export class DistribuidorPage {
         })
       })
       this.ordersUsers = orders
+      if(this.ordersUsers.length != 0 && this.accepted ){
+        this.accepted = false;
+        this.iconAccep = "ios-arrow-up"
+      }
       console.log(orders)
+    })
+  }
+
+  getAcceptedOrders(zone:string, uid:string){
+    console.log(zone,uid,"hola");
+    this.afDb.getOrderDistruitorAccepted(zone,uid)
+    .subscribe((resp)=>{
+      console.log(resp)
+      resp.map((order:any)=>{
+        this.afDb.getUserDataByUid(order.userUid).subscribe((user)=>{
+          order.userData = user
+        })
+      })
+      this.ordersAcepted = resp
+    },(error)=>{
+      console.log(JSON.stringify(error));
     })
   }
 
@@ -77,6 +105,28 @@ export class DistribuidorPage {
       }
     });
     modal.present()
+  }
+
+  showAccepted(){
+    if(!this.accepted){
+      this.iconAccep = "ios-arrow-down"
+      this.accepted = true
+      console.log(this.distribuitorData.zone,this.distribuitorUid)
+      this.getAcceptedOrders(this.distribuitorData.zone,this.distribuitorUid)
+    }else{
+      this.accepted = false
+      this.iconAccep = "ios-arrow-up"
+    }
+  }
+
+  showSolicit(){
+    if(this.solicitud){
+      this.iconSoli = "ios-arrow-up"
+      this.solicitud = false
+    }else{
+      this.iconSoli = "ios-arrow-down"
+      this.solicitud = true
+    }
   }
 
 }

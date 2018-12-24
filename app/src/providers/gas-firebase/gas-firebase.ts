@@ -99,7 +99,8 @@ export class GasFirebaseProvider {
 
   // metodos de distribuidor
   getOrdersDistribuitor(zone:any){
-    return this.dbGas.collection('orderGas').doc(`${zone}`).collection('pedidos').valueChanges() 
+    //return this.dbGas.collection('orderGas').doc(`${zone}`).collection('pedidos').valueChanges() 
+    return this.dbGas.collection('orderGas').doc(`${zone}`).collection('pedidos', ref => ref.where('state','==', 'Solicitado').where('state','>=', 'Cancelado')).valueChanges() 
   }
 
   getOrderById(order:any, zone:any){
@@ -110,6 +111,10 @@ export class GasFirebaseProvider {
   acceptOrder(order:any){
     let idOrder = btoa(order.date)
     return this.dbGas.collection('orderGas').doc(`${order.zone}`).collection('pedidos').doc(idOrder).set(order)
+  }
+
+  getOrderDistruitorAccepted(zone:any,uid:any){
+    return this.dbGas.collection('orderGas').doc(`${zone}`).collection('pedidos', ref => ref.where('acceptedBy','==', uid)).valueChanges()
   }
 
   /*
@@ -153,10 +158,12 @@ export class GasFirebaseProvider {
      return this.dbGas.collection('devices').doc(localStorage.getItem("token")).delete()
    }
 
-   updateByNotification(id:string,zone:any){
+   updateByNotification(id:string,zone:any,uidDistri:any){
+
      this.dbGas.collection('orderGas').doc(zone).collection('pedidos').doc(id).valueChanges()
-     .subscribe((resp:Order)=>{
+     .subscribe((resp:any)=>{
        resp.state = "Aceptado"
+       resp.acceptedBy = uidDistri
        this.dbGas.collection('orderGas').doc(zone).collection('pedidos').doc(btoa(resp.date)).update(resp);
      },
      (error)=>{

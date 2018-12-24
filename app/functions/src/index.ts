@@ -206,6 +206,10 @@ exports.newOrderGasSouth = functions.firestore
                 title: `Nuevo Pedido de Gas en Sector ${dataOrder.zone}`,
                 body: `Tienes un nuevo Pedido de ${username}`,
                 icon: 'https://goo.gl/Fz9nrQ'
+            },
+            data:{
+                id: event.id,
+                zona: "Sur"
             }
         }
 
@@ -315,6 +319,10 @@ exports.newOrderGasCenter = functions.firestore
                 title: `Nuevo Pedido de Gas en Sector ${dataOrder.zone}`,
                 body: `Tienes un nuevo Pedido de ${username}`,
                 icon: 'https://goo.gl/Fz9nrQ'
+            },
+            data:{
+                id: event.id,
+                zona: "Centro"
             }
         }
 

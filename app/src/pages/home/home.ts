@@ -1,7 +1,7 @@
 import { UserRegisterPage } from './../user-register/user-register';
 import { DistribuidorPage } from './../distribuidor/distribuidor';
 import { Component } from '@angular/core';
-import { NavController, ToastController, MenuController } from 'ionic-angular';
+import { NavController, ToastController, MenuController, LoadingController } from 'ionic-angular';
 
 import {GooglePlus} from '@ionic-native/google-plus';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -50,6 +50,7 @@ export class HomePage {
     public navCtrl: NavController, 
     public googleplus: GooglePlus, 
     public toastCtrl: ToastController,
+    public loadingCtrl: LoadingController,
     public afAuth: AngularFireAuth) {
     this.menuCtrl.enable(false, "menuGas");
 
@@ -70,6 +71,7 @@ export class HomePage {
   }
 
   loginCorreo(){
+    this.showLoading()
     this.loginData.email = this.loginData.email.trim()
     console.log(this.loginData)
     let userType = this.loginVerification(this.loginData)
@@ -120,6 +122,7 @@ export class HomePage {
       const facebookCredential = firebase.auth.FacebookAuthProvider.credential(response.authResponse.accessToken);
       firebase.auth().signInWithCredential(facebookCredential)
       .then( resp => { 
+        this.showLoading()
         let uid = resp['uid']
         this.userFromSocial.email = resp['email']
         this.userFromSocial.name = resp['displayName']
@@ -147,6 +150,7 @@ export class HomePage {
     }).then(res=>{
       firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
       .then(resp=>{
+        this.showLoading()
         let uid = resp['uid']
         this.userFromSocial.email = resp['email']
         this.userFromSocial.name = resp['displayName']
@@ -222,6 +226,15 @@ export class HomePage {
       email : "",
       password : ""
     };
+  }
+
+  showLoading(){
+    let loading = this.loadingCtrl.create({
+      dismissOnPageChange: true,
+      content: "Por favor espere .."
+    })
+
+    loading.present();
   }
 }
 

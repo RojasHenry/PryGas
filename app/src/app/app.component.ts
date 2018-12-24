@@ -23,6 +23,8 @@ export class MyApp {
   userLogged:UserModel;
   distribuitorLogged:DistribuitorModel;
 
+  distribUid:any;
+
   typeUser:any
 
   notification:ILocalNotification
@@ -77,8 +79,9 @@ export class MyApp {
       this.listenToNofication()
     });
 
-    events.subscribe('distribuitor:logged', (distribuitor:DistribuitorModel) => {
+    events.subscribe('distribuitor:logged', (distribuitor:DistribuitorModel, distribuitorUid:any ) => {
       this.distribuitorLogged = distribuitor;
+      this.distribUid = distribuitorUid
       localStorage.setItem("type","distribuitor");
       this.typeUser = "distribuitor"
       this.listenToNofication()
@@ -97,6 +100,7 @@ export class MyApp {
       });
       toasts.present();*/
 
+      console.log(JSON.stringify({at: new Date(new Date().getUTCDate()+ 5)}));
       switch(this.typeUser){
         case "user":
           this.notification = {
@@ -107,6 +111,7 @@ export class MyApp {
             priority: 2,
             vibrate:true,
             led: 'FF0000',
+            trigger: {at: new Date(new Date().getTime() + 5)},
             lockscreen:true
           }
         break;
@@ -123,6 +128,7 @@ export class MyApp {
               {id: "yes",title: "Aceptar"},
               {id: "no", title: "Ignorar"}],
             led: 'FF0000',
+            trigger: {at: new Date(new Date().getTime() + 5)},
             lockscreen:true
           }
         break;
@@ -138,11 +144,15 @@ export class MyApp {
       });
       toast.present();
       this.localNotifications.on("yes").subscribe(()=>{
-        this.afDb.updateByNotification(msg.id,msg.zona)
+        this.afDb.getSessionUser()
+        .then()
+        .catch()
+        this.afDb.updateByNotification(msg.id,msg.zona,this.distribUid)
       })
 
-      this.localNotifications.on("no").subscribe(()=>{
+      this.localNotifications.on("no").subscribe((value)=>{
         console.log("boton no")
+        console.log(value)
         this.localNotifications.clear(1);
       })
     })
@@ -164,6 +174,7 @@ export class MyApp {
   }
   
   async signOut(){
+    this.localNotifications.clearAll();
     localStorage.setItem("type","");
     await this.afDb.deleteTokenSesion()
       .then(async ()=>{
