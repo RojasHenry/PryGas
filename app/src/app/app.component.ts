@@ -99,62 +99,86 @@ export class MyApp {
         duration: 3000
       });
       toasts.present();*/
-
-      console.log(JSON.stringify({at: new Date(new Date().getUTCDate()+ 5)}));
-      switch(this.typeUser){
-        case "user":
-          this.notification = {
-            id: 1,
-            title: msg.title,
-            text: msg.body,
-            foreground: true,
-            priority: 2,
-            vibrate:true,
-            led: 'FF0000',
-            trigger: {at: new Date(new Date().getTime() + 5)},
-            lockscreen:true
-          }
-        break;
-
-        case "distribuitor":
-          this.notification = {
-            id: 1,
-            title: msg.title,
-            text: msg.body,
-            foreground: true,
-            priority: 2,
-            vibrate:true,
-            actions: [
-              {id: "yes",title: "Aceptar"},
-              {id: "no", title: "Ignorar"}],
-            led: 'FF0000',
-            trigger: {at: new Date(new Date().getTime() + 5)},
-            lockscreen:true
-          }
-        break;
-
-        default:
-        break;
-      }
-      this.localNotifications.schedule(this.notification);
+      let notificationId:number = parseInt(msg.notid) 
       console.log(JSON.stringify(msg))
-      const toast = this.toastCtrl.create({
-        message: msg.body,
-        duration: 3000
-      });
-      toast.present();
-      this.localNotifications.on("yes").subscribe(()=>{
-        this.afDb.getSessionUser()
-        .then()
-        .catch()
-        this.afDb.updateByNotification(msg.id,msg.zona,this.distribUid)
-      })
+      
+      if(msg.state == "cancel" && this.typeUser == "distribuitor"){
+        this.localNotifications.isPresent(notificationId)
+        .then(resp=> (resp)? this.localNotifications.clear(notificationId):console.log(resp))
+        .catch(error=> console.log(JSON.stringify(error)))
+        
+      }else{
 
-      this.localNotifications.on("no").subscribe((value)=>{
-        console.log("boton no")
-        console.log(value)
-        this.localNotifications.clear(1);
-      })
+        switch(this.typeUser){
+          case "user":
+            this.notification = {
+              id: notificationId,
+              title: msg.title,
+              text: msg.body,
+              foreground: true,
+              priority: 2,
+              vibrate:true,
+              led: 'FF0000',
+              trigger: {at: new Date(new Date().getTime() + 5)},
+              lockscreen:true
+            }
+          break;
+
+          case "distribuitor":
+            this.notification = {
+              id: notificationId,
+              title: msg.title,
+              text: msg.body,
+              foreground: true,
+              priority: 2,
+              vibrate:true,
+              actions: [
+                {id: "yes",title: "Aceptar"},
+                {id: "no", title: "Ignorar"}],
+              led: 'FF0000',
+              trigger: {at: new Date(new Date().getTime() + 5)},
+              lockscreen:true
+            }
+          break;
+
+          default:
+          break;
+        }
+
+        this.localNotifications.schedule(this.notification);
+
+        const toast = this.toastCtrl.create({
+          message: msg.body,
+          duration: 3000
+        });
+        toast.present();
+        this.localNotifications.on("yes").subscribe(()=>{
+          this.afDb.updateByNotification(msg.id,msg.zona,this.distribUid)
+        })
+
+        this.localNotifications.on("no").subscribe((value)=>{
+          console.log("boton no")
+          console.log(JSON.stringify(value))
+          this.localNotifications.clear(value.id);
+        })
+
+        this.localNotifications.on('click').subscribe((values)=>{
+          console.log("Click en notificacion")
+          switch(this.typeUser){
+            case "user":
+              
+            break;
+  
+            case "distribuitor":
+              this.events.publish('orderNoti:show', values.id);
+            break;
+  
+            default:
+            break;
+          }
+        })
+      }
+      
     })
   }
   gotoProfile(){

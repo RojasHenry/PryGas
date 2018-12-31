@@ -113,10 +113,13 @@ export class GasFirebaseProvider {
     return this.dbGas.collection('orderGas').doc(`${order.zone}`).collection('pedidos').doc(idOrder).set(order)
   }
 
-  getOrderDistruitorAccepted(zone:any,uid:any){
+  getOrderDistruitorAccepted(zone:any,uid:any){ // .where('acceptedBy','==', uid)
     return this.dbGas.collection('orderGas').doc(`${zone}`).collection('pedidos', ref => ref.where('acceptedBy','==', uid)).valueChanges()
   }
 
+  getOrderByKeyID(idkey:any,zone:any){
+    return this.dbGas.collection('orderGas').doc(`${zone}`).collection('pedidos', ref => ref.where('id','==', idkey)).valueChanges()  
+  }
   /*
   Metodos para notificaciones  
   */
@@ -170,4 +173,5 @@ export class GasFirebaseProvider {
        console.error(JSON.stringify(error))
      })
    }
+
 }

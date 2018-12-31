@@ -33,6 +33,7 @@ export class UserHomePage {
     zoom: 10
   }
   orderUser:Order = {
+    id: 0,
     zone:"",
     date:"",
     latitude:0,
@@ -86,6 +87,7 @@ export class UserHomePage {
   }
 
   orderGas(){
+    this.orderUser.id = new Date().getTime();
     this.orderUser.latitude = (this.orderUser.latitude == 0)? this.coordenatesDef.lat : this.orderUser.latitude;
     this.orderUser.longitude = (this.orderUser.longitude == 0)? this.coordenatesDef.long : this.orderUser.longitude;
     this.orderUser.userUid = this.uidUser
@@ -95,7 +97,9 @@ export class UserHomePage {
     if(!localStorage.getItem('hasOrder')){
       localStorage.setItem('hasOrder',  btoa(JSON.stringify(this.orderUser)));
     }
+
     this.showAlert(this.orderUser)
+
     this.afDb.registerOrder(this.orderUser)
     .then(()=>{
       this.afDb.getOrderActual(this.orderUser).subscribe((orderActual:Order)=>{
@@ -197,9 +201,11 @@ export class UserHomePage {
 
   getActualDate():any{
     let currentdate = new Date(); 
+
     let datetime = currentdate.getDate() + "/"
     + (currentdate.getMonth()+1)  + "/" 
-    + currentdate.getFullYear() + " @ "
+    + currentdate.getFullYear() + " - "
+    
     
     if(currentdate.getMinutes() < 10){
       datetime += currentdate.getHours()+ ":"+ 
@@ -227,6 +233,7 @@ export class UserHomePage {
 
   cleanUserOrder(){
     this.orderUser = {
+      id:0,
       zone:"",
       date:"",
       latitude:0,

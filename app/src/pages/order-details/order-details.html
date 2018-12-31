@@ -48,7 +48,7 @@
           </ion-card>
         </ion-col>
       </ion-row>
-    <ion-row align-items-end>
+    <ion-row align-items-end *ngIf="orderDetail.state != 'Aceptado'">
         <ion-col offset-6 col-3>
           <button ion-button  class="btn" block outline (click)="ignoreOrder()" >Ignorar</button>
         </ion-col>

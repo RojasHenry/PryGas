@@ -55,11 +55,19 @@ export class DistribuidorPage {
     }).catch((error)=>{
       console.log(error);
     })
+
+    events.subscribe('orderNoti:show', (id:any) => {
+      this.ordersUsers.map((order:any)=>{
+        if(order.id = id){
+          this.reviewOrder(order)
+          return;
+        }
+      })
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DistribuidorPage');
-   
   }
 
   getOrders(zone:string){
@@ -70,12 +78,23 @@ export class DistribuidorPage {
           order.userData = user
         })
       })
+      
+      // funcion para ordenar de forma descendente 
+      orders.sort((a, b) => Number(b.id) - Number(a.id))
+
       this.ordersUsers = orders
       if(this.ordersUsers.length != 0 && this.accepted ){
         this.accepted = false;
         this.iconAccep = "ios-arrow-up"
       }
       console.log(orders)
+    },(error)=>{
+      console.log(JSON.stringify(error));
+      this.ordersUsers = []
+      if(this.ordersUsers.length != 0 && this.accepted ){
+        this.accepted = false;
+        this.iconAccep = "ios-arrow-up"
+      }
     })
   }
 
@@ -89,9 +108,13 @@ export class DistribuidorPage {
           order.userData = user
         })
       })
+      // funcion para ordenar de forma descendente 
+      resp.sort((a, b) => Number(b.id) - Number(a.id))
+
       this.ordersAcepted = resp
     },(error)=>{
       console.log(JSON.stringify(error));
+      this.ordersAcepted = []
     })
   }
 

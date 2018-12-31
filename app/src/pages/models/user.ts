@@ -33,6 +33,7 @@ interface Coordenates{
 }
 
 interface Order{
+    id:number
     zone:string,
     userUid:string,
     latitude:number,

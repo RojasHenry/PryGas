@@ -60,6 +60,43 @@ exports.orderIsAcceptedNorth = functions.firestore
             return admin.messaging().sendToDevice(tokens, payload)
         }else{
             console.log(JSON.stringify({userState: dataOrderAfter.state }))
+            if(dataOrderAfter.state == "Cancelado"){
+
+                const db = admin.firestore()
+                const distribuitorRef = db.collection('distributor').where('zone', "==",dataOrderAfter.zone)
+
+                const devicesRef = db.collection('devices')
+        
+                const devices = await devicesRef.get();
+                const distribuitor = await distribuitorRef.get();
+        
+                const tokens = [];
+        
+                const payload = {
+                    notification: {
+                        title: `Orden Cancelada`,
+                        body: `Usuario canceló su peedido`
+                    },
+                    data:{
+                        state: "cancel",
+                        notid: dataOrderAfter.id.toString()
+                    }
+                }
+
+                console.log(payload)
+
+                // send a notification to each device token
+                distribuitor.forEach(distr => {
+                    devices.forEach(dev =>{
+                        if(distr.id == dev.data().userId){
+                            const token = dev.data().token;
+                            tokens.push(token)
+                        }
+                    })
+                })
+        
+                return admin.messaging().sendToDevice(tokens, payload)
+            }
             return null
         }
 })
@@ -87,6 +124,8 @@ exports.newOrderGasNorth = functions.firestore
         })
 
         console.log(username)
+
+        let idNot:any = dataOrder.id.toString()
         // Notification content
         const payload = {
             notification: {
@@ -96,7 +135,8 @@ exports.newOrderGasNorth = functions.firestore
             },
             data:{
                 id: event.id,
-                zona: "Norte"
+                zona: "Norte",
+                notid: idNot
             }
         }
 
@@ -173,6 +213,43 @@ exports.orderIsAcceptedSouth = functions.firestore
             return admin.messaging().sendToDevice(tokens, payload)
         }else{
             console.log(JSON.stringify({userState: dataOrderAfter.state }))
+            if(dataOrderAfter.state == "Cancelado"){
+
+                const db = admin.firestore()
+                const distribuitorRef = db.collection('distributor').where('zone', "==",dataOrderAfter.zone)
+
+                const devicesRef = db.collection('devices')
+        
+                const devices = await devicesRef.get();
+                const distribuitor = await distribuitorRef.get();
+        
+                const tokens = [];
+        
+                const payload = {
+                    notification: {
+                        title: `Orden Cancelada`,
+                        body: `Usuario canceló su peedido`
+                    },
+                    data:{
+                        state: "cancel",
+                        notid: dataOrderAfter.id.toString()
+                    }
+                }
+
+                console.log(payload)
+
+                // send a notification to each device token
+                distribuitor.forEach(distr => {
+                    devices.forEach(dev =>{
+                        if(distr.id == dev.data().userId){
+                            const token = dev.data().token;
+                            tokens.push(token)
+                        }
+                    })
+                })
+        
+                return admin.messaging().sendToDevice(tokens, payload)
+            }
             return null
         }
 })
@@ -200,6 +277,8 @@ exports.newOrderGasSouth = functions.firestore
         })
 
         console.log(username)
+
+        let idNot:any = dataOrder.id.toString()
         // Notification content
         const payload = {
             notification: {
@@ -209,7 +288,8 @@ exports.newOrderGasSouth = functions.firestore
             },
             data:{
                 id: event.id,
-                zona: "Sur"
+                zona: "Sur",
+                notid: idNot
             }
         }
 
@@ -286,6 +366,43 @@ exports.orderIsAcceptedCenter = functions.firestore
             return admin.messaging().sendToDevice(tokens, payload)
         }else{
             console.log(JSON.stringify({userState: dataOrderAfter.state }))
+            if(dataOrderAfter.state == "Cancelado"){
+
+                const db = admin.firestore()
+                const distribuitorRef = db.collection('distributor').where('zone', "==",dataOrderAfter.zone)
+
+                const devicesRef = db.collection('devices')
+        
+                const devices = await devicesRef.get();
+                const distribuitor = await distribuitorRef.get();
+        
+                const tokens = [];
+        
+                const payload = {
+                    notification: {
+                        title: `Orden Cancelada`,
+                        body: `Usuario canceló su peedido`
+                    },
+                    data:{
+                        state: "cancel",
+                        notid: dataOrderAfter.id.toString()
+                    }
+                }
+
+                console.log(payload)
+
+                // send a notification to each device token
+                distribuitor.forEach(distr => {
+                    devices.forEach(dev =>{
+                        if(distr.id == dev.data().userId){
+                            const token = dev.data().token;
+                            tokens.push(token)
+                        }
+                    })
+                })
+        
+                return admin.messaging().sendToDevice(tokens, payload)
+            }
             return null
         }
 })
@@ -313,6 +430,8 @@ exports.newOrderGasCenter = functions.firestore
         })
 
         console.log(username)
+
+        let idNot:any = dataOrder.id.toString()
         // Notification content
         const payload = {
             notification: {
@@ -322,7 +441,8 @@ exports.newOrderGasCenter = functions.firestore
             },
             data:{
                 id: event.id,
-                zona: "Centro"
+                zona: "Centro",
+                notid: idNot
             }
         }
 
