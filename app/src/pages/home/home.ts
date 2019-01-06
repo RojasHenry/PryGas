@@ -21,6 +21,7 @@ export class HomePage {
   //Creacion objeto vacio
 
   isUser:boolean = true;
+  loading:any;
 
   loginData = {
     email : "",
@@ -83,6 +84,7 @@ export class HomePage {
         this.navCtrl.setRoot(UserHomePage);
       })
       .catch(err => {
+        this.loading.dismiss();
         let toast = this.toastCtrl.create({
           message: err.message,
           duration: 1000
@@ -100,6 +102,7 @@ export class HomePage {
         this.navCtrl.setRoot(DistribuidorPage);
       })
       .catch(err => {
+        this.loading.dismiss();
         let toast = this.toastCtrl.create({
           message: err.message,
           duration: 1000
@@ -108,6 +111,7 @@ export class HomePage {
       })
       break;
       default:
+      this.loading.dismiss();
       let toast = this.toastCtrl.create({
         message: "Error: "+userType,
         duration: 3000
@@ -139,6 +143,7 @@ export class HomePage {
         })
       });
     }).catch((error) => { 
+      this.loading.dismiss();
       console.log(JSON.stringify(error)) 
     });
   }
@@ -166,6 +171,7 @@ export class HomePage {
           }
         })
       }).catch(ns=>{
+        this.loading.dismiss();
         console.log(JSON.stringify(ns))
       })
     })
@@ -229,12 +235,12 @@ export class HomePage {
   }
 
   showLoading(){
-    let loading = this.loadingCtrl.create({
+    this.loading = this.loadingCtrl.create({
       dismissOnPageChange: true,
       content: "Por favor espere .."
     })
 
-    loading.present();
+    this.loading.present();
   }
 }
 
