@@ -25,14 +25,13 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { GasFirebaseProvider } from '../providers/gas-firebase/gas-firebase';
 
-import { LoginPageModule } from './../pages/login/login.module';
 import { UserRegisterPageModule } from './../pages/user-register/user-register.module';
 import { UserHomePageModule } from './../pages/user-home/user-home.module';
 import { RegisterPageModule } from './../pages/register/register.module';
 import { UserProfilePageModule } from '../pages/user-profile/user-profile.module';
-import { UserLocationPageModule } from './../pages/user-location/user-location.module';
 import { OrderDetailsPageModule } from './../pages/order-details/order-details.module';
 import { DistribuidorPageModule } from './../pages/distribuidor/distribuidor.module';
+import { UserOrdersPageModule } from '../pages/user-orders/user-orders.module';
 
 export const firebaseConfig = {
   /*
@@ -69,10 +68,9 @@ firebase.initializeApp(firebaseConfig);
     UserHomePageModule,
     UserRegisterPageModule,
     RegisterPageModule,
-    LoginPageModule,
     DistribuidorPageModule,
     OrderDetailsPageModule,
-    UserLocationPageModule,
+    UserOrdersPageModule,
     UserProfilePageModule
   ],
   bootstrap: [IonicApp],
@@ -96,3 +94,4 @@ firebase.initializeApp(firebaseConfig);
   ]
 })
 export class AppModule {}
+

@@ -2,6 +2,8 @@
 	<ion-navbar>
 		<ion-title>
 			AppGas Quito
+			<ion-label class="title" *ngIf="isUser" >(Usuario)</ion-label>
+			<ion-label class="title" *ngIf="!isUser" >(Distribuidor)</ion-label>
 		</ion-title>
 	</ion-navbar>
 </ion-header>

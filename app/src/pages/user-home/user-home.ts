@@ -2,7 +2,7 @@ import { Diagnostic } from '@ionic-native/diagnostic';
 import { Geolocation } from '@ionic-native/geolocation';
 import { GasFirebaseProvider } from './../../providers/gas-firebase/gas-firebase';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController, Events, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController, Events, AlertController, ToastController } from 'ionic-angular';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 
@@ -40,7 +40,7 @@ export class UserHomePage {
     longitude:0,
     state:"",
     userUid: "",
-    numberGas:null,
+    numberGas:0,
     reference:""
   }
 
@@ -52,6 +52,7 @@ export class UserHomePage {
     private diagnostic: Diagnostic,
     public afDb : GasFirebaseProvider, 
     public geolocation:Geolocation,
+    public toastCtrl: ToastController,
     private locationAccuracy: LocationAccuracy,
     public alertCtrl: AlertController) {
       this.getActualLocation();
@@ -98,8 +99,24 @@ export class UserHomePage {
       localStorage.setItem('hasOrder',  btoa(JSON.stringify(this.orderUser)));
     }
 
-    this.showAlert(this.orderUser)
+    if(this.orderUser.numberGas > 3){
+       this.showToastNumberGas();
+       return;
+    }else{
+      this.showAlert(this.orderUser)
+      this.registerOrder()
+    }
+  }
 
+  async showToastNumberGas(){
+    const toast = await this.toastCtrl.create({
+      message: 'Pedido máximo de cilindros 3.',
+      duration: 2000
+    });
+    toast.present();
+  }
+
+  registerOrder(){
     this.afDb.registerOrder(this.orderUser)
     .then(()=>{
       this.afDb.getOrderActual(this.orderUser).subscribe((orderActual:Order)=>{

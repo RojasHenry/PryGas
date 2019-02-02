@@ -130,6 +130,6 @@
 
 <ion-footer>
     <div padding>
-      <button class="btn" ion-button block outline  round (tap)="orderGas()" [disabled]="orderUser.numberGas == 0 || orderUser.zone =='' || orderUser.reference == '' ">Solicitar Gas</button>
+      <button class="btn" ion-button block outline  round (tap)="orderGas()" [disabled]="orderUser.numberGas <= 0 || orderUser.zone =='' || orderUser.reference == '' ">Solicitar Gas</button>
     </div>
 </ion-footer>

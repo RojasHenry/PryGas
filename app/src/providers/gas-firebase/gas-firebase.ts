@@ -80,6 +80,11 @@ export class GasFirebaseProvider {
     return this.dbGas.collection('users').doc(uid).get()
   } 
 
+  getOrdersUsersAccepted(zone:any,uidUser:any){ // .where('acceptedBy','==', uid)
+    return this.dbGas.collection('orderGas').doc(`${zone}`).collection('pedidos', ref => ref.where('userUid','==', uidUser).where('state','==', 'Aceptado')).valueChanges()
+  }
+  
+
   // resgistrar pedido de gas
 
   registerOrder(order:Order){

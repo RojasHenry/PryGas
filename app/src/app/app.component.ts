@@ -1,4 +1,3 @@
-import { UserLocationPage } from './../pages/user-location/user-location';
 import { Component, ViewChild } from '@angular/core';
 import { Platform, App, NavController, Nav, Events, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -11,6 +10,8 @@ import { UserHomePage } from './../pages/user-home/user-home';
 import { GasFirebaseProvider } from './../providers/gas-firebase/gas-firebase';
 
 import { LocalNotifications, ILocalNotification} from '@ionic-native/local-notifications';
+import { UserOrdersPage } from '../pages/user-orders/user-orders';
+
 
 @Component({
   templateUrl: 'app.html'
@@ -186,7 +187,7 @@ export class MyApp {
   }
 
   gotoLocation(){
-    this.nav.setRoot(UserLocationPage)
+    this.nav.setRoot(UserOrdersPage) 
   }
 
   gotoHome(){
